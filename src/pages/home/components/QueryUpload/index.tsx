@@ -21,7 +21,7 @@ const QueryUpload = () => {
   };
 
   return (
-    <div className="pb-10 mt-[20rem]">
+    <div className="pb-10 mt-[8rem]">
       <div className="flex flex-col gap-5 items-center justify-center">
         <p className="text-lg font-bold">No search queries yet</p>
         <p className="md:text-lg text-xs text-gray-500 mb-10">
