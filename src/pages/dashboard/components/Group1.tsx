@@ -3,13 +3,13 @@ import Image from "next/image";
 
 function Group1() {
   return (
-    <div className="flex justify-center md:justify-evenly flex-row flex-wrap gap-x-5 md:gap-x-0">
+    <div className="flex justify-start md:justify-evenly flex-row flex-wrap gap-x-5 md:gap-x-0">
       <div className="border border-sirp-dashbordb1 rounded-[1.5rem] bg-sirp-secondary2  h-[12rem] mt-5  p-3">
         <div>
           <div className="flex flex-row items-center gap-3 pt-5">
             <div>
               <Image
-                src={require("../../../assets/icons/Frame 05.svg")}
+                src={require("../../../assets/icons/frame_05.svg")}
                 alt="documents"
                 className="cursor-pointer"
                 width={100}
@@ -24,7 +24,7 @@ function Group1() {
           </div>
         </div>
         <div className="pt-8 ">
-        <button className=" border border-sirp-dashboardcola w-[20rem] pb-2 pt-2 rounded-[1rem] hover:bg-sirp-dashboardcola hover:text-white text-sirp-dashboardcola font-bold">
+          <button className=" border border-sirp-dashboardcola w-[20rem] pb-2 pt-2 rounded-[1rem] hover:bg-sirp-dashboardcola hover:text-white text-sirp-dashboardcola font-bold">
             Open IRP
           </button>
         </div>
@@ -34,7 +34,7 @@ function Group1() {
           <div className="flex flex-row items-center gap-3 pt-5">
             <div>
               <Image
-                src={require("../../../assets/icons/Frame 06.svg")}
+                src={require("../../../assets/icons/frame_06.svg")}
                 alt="documents"
                 className="cursor-pointer"
                 width={75}
@@ -47,7 +47,7 @@ function Group1() {
           </div>
         </div>
         <div className="pt-8 ">
-        <button className=" border border-sirp-primary w-[20rem] pb-2 pt-2 rounded-[1rem] hover:bg-sirp-primary hover:text-white text-sirp-primary font-bold">
+          <button className=" border border-sirp-primary w-[20rem] pb-2 pt-2 rounded-[1rem] hover:bg-sirp-primary hover:text-white text-sirp-primary font-bold">
             Invite collaborators
           </button>
         </div>
@@ -57,7 +57,7 @@ function Group1() {
           <div className="flex flex-row items-center gap-3 pt-5">
             <div>
               <Image
-                src={require("../../../assets/icons/Frame 07.svg")}
+                src={require("../../../assets/icons/frame_07.svg")}
                 alt="documents"
                 className="cursor-pointer"
                 width={100}
@@ -72,7 +72,7 @@ function Group1() {
           </div>
         </div>
         <div className="pt-8 ">
-        <button className=" border border-sirp-dashboardcola w-[20rem] pb-2 pt-2 rounded-[1rem] hover:bg-sirp-dashboardcola hover:text-white text-sirp-dashboardcola font-bold">
+          <button className=" border border-sirp-dashboardcola w-[20rem] pb-2 pt-2 rounded-[1rem] hover:bg-sirp-dashboardcola hover:text-white text-sirp-dashboardcola font-bold">
             Open collab workspace
           </button>
         </div>
@@ -82,7 +82,7 @@ function Group1() {
           <div className="flex flex-row items-center gap-3 pt-5">
             <div>
               <Image
-                src={require("../../../assets/icons/Frame 08.svg")}
+                src={require("../../../assets/icons/frame_08.svg")}
                 alt="documents"
                 className="cursor-pointer"
                 width={100}
@@ -97,7 +97,7 @@ function Group1() {
           </div>
         </div>
         <div className="pt-8 ">
-        <button className=" border border-sirp-dashboardcola w-[20rem] pb-2 pt-2 rounded-[1rem] hover:bg-sirp-dashboardcola hover:text-white text-sirp-dashboardcola font-bold">
+          <button className=" border border-sirp-dashboardcola w-[20rem] pb-2 pt-2 rounded-[1rem] hover:bg-sirp-dashboardcola hover:text-white text-sirp-dashboardcola font-bold">
             Open Analizer
           </button>
         </div>
@@ -107,7 +107,7 @@ function Group1() {
           <div className="flex flex-row items-center gap-3 pt-5">
             <div>
               <Image
-                src={require("../../../assets/icons/Frame 09.svg")}
+                src={require("../../../assets/icons/frame_09.svg")}
                 alt="documents"
                 className="cursor-pointer"
                 width={100}
@@ -122,7 +122,7 @@ function Group1() {
           </div>
         </div>
         <div className="pt-8 ">
-        <button className=" border border-sirp-dashboardcola w-[20rem] pb-2 pt-2 rounded-[1rem] hover:bg-sirp-dashboardcola hover:text-white text-sirp-dashboardcola font-bold">
+          <button className=" border border-sirp-dashboardcola w-[20rem] pb-2 pt-2 rounded-[1rem] hover:bg-sirp-dashboardcola hover:text-white text-sirp-dashboardcola font-bold">
             Open Interrogator
           </button>
         </div>
@@ -132,7 +132,7 @@ function Group1() {
           <div className="flex flex-row items-center gap-3 pt-5">
             <div>
               <Image
-                src={require("../../../assets/icons/Frame 0100.svg")}
+                src={require("../../../assets/icons/frame_0100.svg")}
                 alt="documents"
                 className="cursor-pointer"
                 width={100}
@@ -140,14 +140,12 @@ function Group1() {
             </div>
             <div>
               <p className="font-bold">4000</p>
-              <span className="font-light text-sirp-grey">
-                Total documents
-              </span>
+              <span className="font-light text-sirp-grey">Total documents</span>
             </div>
           </div>
         </div>
         <div className="pt-8 ">
-        <button className=" border border-sirp-dashboardcola w-[20rem] pb-2 pt-2 rounded-[1rem] hover:bg-sirp-dashboardcola hover:text-white text-sirp-dashboardcola font-bold">
+          <button className=" border border-sirp-dashboardcola w-[20rem] pb-2 pt-2 rounded-[1rem] hover:bg-sirp-dashboardcola hover:text-white text-sirp-dashboardcola font-bold">
             Open Translator
           </button>
         </div>
@@ -157,7 +155,7 @@ function Group1() {
           <div className="flex flex-row items-center gap-3 pt-5">
             <div>
               <Image
-                src={require("../../../assets/icons/Frame 011.svg")}
+                src={require("../../../assets/icons/frame_011.svg")}
                 alt="documents"
                 className=" cursor-pointer"
                 width={100}
@@ -172,7 +170,7 @@ function Group1() {
           </div>
         </div>
         <div className="pt-8 ">
-        <button className=" border border-sirp-dashboardcola w-[20rem] pb-2 pt-2 rounded-[1rem] hover:bg-sirp-dashboardcola hover:text-white text-sirp-dashboardcola font-bold">
+          <button className=" border border-sirp-dashboardcola w-[20rem] pb-2 pt-2 rounded-[1rem] hover:bg-sirp-dashboardcola hover:text-white text-sirp-dashboardcola font-bold">
             Open Fact checker
           </button>
         </div>
@@ -182,7 +180,7 @@ function Group1() {
           <div className="flex flex-row items-center gap-3 pt-5">
             <div>
               <Image
-                src={require("../../../assets/icons/Frame 012.svg")}
+                src={require("../../../assets/icons/frame_012.svg")}
                 alt="documents"
                 className="cursor-pointer"
                 width={100}
@@ -197,7 +195,7 @@ function Group1() {
           </div>
         </div>
         <div className="pt-8 ">
-        <button className=" border border-sirp-dashboardcola w-[20rem] pb-2 pt-2 rounded-[1rem] hover:bg-sirp-dashboardcola hover:text-white text-sirp-dashboardcola font-bold">
+          <button className=" border border-sirp-dashboardcola w-[20rem] pb-2 pt-2 rounded-[1rem] hover:bg-sirp-dashboardcola hover:text-white text-sirp-dashboardcola font-bold">
             Open Summarizer
           </button>
         </div>
@@ -207,7 +205,7 @@ function Group1() {
           <div className="flex flex-row items-center gap-3 pt-5">
             <div>
               <Image
-                src={require("../../../assets/icons/Frame 013.svg")}
+                src={require("../../../assets/icons/frame_013.svg")}
                 alt="documents"
                 className="cursor-pointer"
                 width={100}
@@ -215,14 +213,12 @@ function Group1() {
             </div>
             <div>
               <p className="font-bold">4000</p>
-              <span className="font-light text-sirp-grey">
-                Total documents
-              </span>
+              <span className="font-light text-sirp-grey">Total documents</span>
             </div>
           </div>
         </div>
         <div className="pt-8 ">
-        <button className=" border border-sirp-dashboardcola w-[20rem] pb-2 pt-2 rounded-[1rem] hover:bg-sirp-dashboardcola hover:text-white text-sirp-dashboardcola font-bold">
+          <button className=" border border-sirp-dashboardcola w-[20rem] pb-2 pt-2 rounded-[1rem] hover:bg-sirp-dashboardcola hover:text-white text-sirp-dashboardcola font-bold">
             Open Oracle
           </button>
         </div>

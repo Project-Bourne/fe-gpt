@@ -5,7 +5,7 @@ import Group1 from "./components/Group1";
 
 const index = () => {
   return (
-    <div className="h-full overflow-y-scroll">
+    <div className="h-full overflow-y-scroll mt-[10rem]">
       <h1 className="text-black text-2xl pl-10 font-bold">
         Welcome Oluanrawaju
       </h1>
@@ -15,7 +15,7 @@ const index = () => {
         <Left />
         <Right />
       </div>
-      <div className="my-5 flex items-center justify-center">
+      <div className="mt-5 mb-5">
         <Group1 />
       </div>
     </div>
