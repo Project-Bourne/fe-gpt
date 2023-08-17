@@ -11,6 +11,7 @@ function Tab({ tabHeaderContents, tabBodyContents }) {
         <ul className="w-[80%] flex flex-wrap md:flex-nowrap gap-x-1 md:gap-x-3">
           {tabHeaderContents.map((content) => (
             <li
+            key={content.id}
               onClick={() => setToggleIndex(content.id)}
               className={`flex px-3 md:px-8 pb-2 pt-1 font-light text-xs hover:text-sirp-primary hover:border-b-2 hover:border-b-sirp-primary active:text-sirp-primary transition ease-in-out ${
                 toggleIndex === content.id
@@ -35,7 +36,7 @@ function Tab({ tabHeaderContents, tabBodyContents }) {
       {/* tab body  */}
       <div>
         {tabBodyContents.map((content) => (
-          <>{toggleIndex === content.id && content.component}</>
+          <div key={content.id}>{toggleIndex === content.id && content.component}</div>
         ))}
       </div>
     </>

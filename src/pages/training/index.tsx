@@ -12,9 +12,9 @@ function Training() {
       undefined,
       { shallow: true },
     );
-  }, []);
+  }, );
 
-  return <></>;
+  return ;
 }
 
 export default Training;

@@ -70,7 +70,10 @@ module.exports = {
 
           counterbg: '#ECF2F9',
 
-          listBg: '#F9FBFE'
+          listBg: '#F9FBFE',
+
+          accentBlue: '#EEF4FB'
+      
         }
       },
       screens: {

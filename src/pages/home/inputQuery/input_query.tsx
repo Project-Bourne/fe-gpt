@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import QueryCard from "../components/QueryCard";
 
 const input_query = () => {
-  const router = useRouter();
 
   return (
     <div className="mt-[8rem] h-full rounded-[1rem] bg-[#F9F9F9] mx-5 ">
