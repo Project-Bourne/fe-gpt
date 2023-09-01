@@ -1,7 +1,8 @@
 import TrainingLayout from "@/layout/TrainingLayout";
 import { FAQS, LogData, QuickSearch } from "@/utils/constants";
 import React from "react";
-import { SearchComp, FAQComp } from "../components";
+import FAQComp from "../components/FAQ";
+import SearchComp from "../components/SearchComp"
 import Image from "next/image";
 
 const AllTraining = () => {
@@ -40,7 +41,7 @@ const AllTraining = () => {
 
             <div className="w-full flex flex-row justify-center items-center my-8">
               <Image
-                src={require("../../../assets/svg/image-checker.svg")}
+                src={require("../../../../public/svg/image-checker.svg")}
                 alt="search"
                 // width={200}
                 // height={}

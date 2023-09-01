@@ -19,7 +19,7 @@ const ActionIcons = ({ doc }: ActionIconsProps) => {
       <div className="flex gap-2 px-5">
         <Tooltip title="Export to Collab">
           <Image
-            src={require("../../../assets/icons/export_gray.svg")}
+            src={require("../../../../public/icons/export_gray.svg")}
             alt="documents"
             className=" cursor-pointer"
             width={30}
@@ -28,7 +28,7 @@ const ActionIcons = ({ doc }: ActionIconsProps) => {
         </Tooltip>
         <Tooltip title="Analyze">
           <Image
-            src={require("../../../assets/icons/analyzer_gray.svg")}
+            src={require("../../../../public/icons/analyzer_gray.svg")}
             alt="documents"
             className=" cursor-pointer"
             width={30}
@@ -36,7 +36,7 @@ const ActionIcons = ({ doc }: ActionIconsProps) => {
         </Tooltip>
         <Tooltip title="Search">
           <Image
-            src={require("../../../assets/icons/search_gray.svg")}
+            src={require("../../../../public/icons/search_gray.svg")}
             alt="documents"
             className="cursor-pointer"
             width={30}
@@ -44,7 +44,7 @@ const ActionIcons = ({ doc }: ActionIconsProps) => {
         </Tooltip>
         <Tooltip title="Translate">
           <Image
-            src={require("../../../assets/icons/translate_gray.svg")}
+            src={require("../../../../public/icons/translate_gray.svg")}
             alt="documents"
             className="cursor-pointer"
             width={30}
@@ -53,7 +53,7 @@ const ActionIcons = ({ doc }: ActionIconsProps) => {
         </Tooltip>
         <Tooltip title="Run Fact Checker">
           <Image
-            src={require("../../../assets/icons/factcheck_gray.svg")}
+            src={require("../../../../public/icons/factcheck_gray.svg")}
             alt="documents"
             className="cursor-pointer"
             width={30}

@@ -44,7 +44,7 @@ function Index (){
         <div className="flex justify-between w-full items-center px-5 border-b-2">
           <div className="flex justify-start items-center gap-5 py-1">
             <Image
-              src={require(`../../../assets/icons/singleAvatar.svg`)}
+              src={require(`../../../../public/icons/singleAvatar.svg`)}
               alt="upload image"
               width={30}
               height={20}
@@ -54,7 +54,7 @@ function Index (){
             <h1>Chisom Herry</h1>
           </div>
           <Image
-            src={require(`../../../assets/icons/three_dots.svg`)}
+            src={require(`../../../../public/icons/three_dots.svg`)}
             alt="upload image"
             width={5}
             height={20}
@@ -71,7 +71,7 @@ function Index (){
           </span>
           {toggleEdit && (
             <Image
-              src={require(`../../../assets/icons/edit_Icon.svg`)}
+              src={require(`../../../../public/icons/edit_Icon.svg`)}
               alt="upload image"
               width={40}
               height={50}
@@ -87,7 +87,7 @@ function Index (){
         <div className="flex justify-between w-full items-center px-5 border-b-4 border-l-4  border-sirp-accentBlue">
           <div className="flex justify-start items-center gap-5 py-1">
             <Image
-              src={require(`../../../assets/icons/oracleAvatar.svg`)}
+              src={require(`../../../../public/icons/oracleAvatar.svg`)}
               alt="upload image"
               width={30}
               height={20}
@@ -97,7 +97,7 @@ function Index (){
             <h1>Oracle</h1>
           </div>
           <Image
-            src={require(`../../../assets/icons/three_dots.svg`)}
+            src={require(`../../../../public/icons/three_dots.svg`)}
             alt="upload image"
             width={5}
             height={20}
@@ -297,7 +297,7 @@ function Index (){
               }
             >
               <Image
-                src={require(`../../../assets/icons/chat.svg`)}
+                src={require(`../../../../public/icons/chat.svg`)}
                 alt="upload image"
                 width={20}
                 height={20}

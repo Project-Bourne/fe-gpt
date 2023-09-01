@@ -44,7 +44,7 @@ const QueryUpload = () => {
             }
           >
             <Image
-              src={require(`../../../../assets/icons/chat.svg`)}
+              src={require(`../../../../../public/icons/chat.svg`)}
               alt="upload image"
               width={20}
               height={20}
