@@ -3,21 +3,21 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const oracleSlice = createSlice({
   name: "Oracle",
   initialState: {
-    toggleEdit: false,
-    toggleActionIcon: false,
+    history: [],
+    bookmark: [],
   },
   reducers: {
-    setToggleEdit: (state) => {
-      state.toggleEdit = !state.toggleEdit;
+    setBookmark: state => {
+      state.bookmark = state.history.filter(el => el.bookmark);
     },
-    settoggleActionIcon: (state) => {
-      state.toggleActionIcon = !state.toggleActionIcon;
+    setHistory: (state, action) => {
+      state.history = action.payload;
     },
   },
 });
 
 export const {
-  setToggleEdit, settoggleActionIcon
+  setBookmark, setHistory
   
 } = oracleSlice.actions;
 

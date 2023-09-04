@@ -15,7 +15,7 @@ function NavBar() {
           className="md:mr-[20px]"
           priority
         />
-        <h1 className="text-sirp-primary font-semibold text-[30px] hidden md:block">
+        <h1 className="text-sirp-primary font-semibold text-[25px] hidden md:block">
           Deep Chat
         </h1>
       </div>
