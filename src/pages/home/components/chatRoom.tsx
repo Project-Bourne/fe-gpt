@@ -215,6 +215,7 @@ function ChatRoom() {
 
             <div className='mb-36'>
                 {!showQuery ? (
+
                     <QueryCard setShowQuery={setShowQuery} setChats={setChats} setIsLoading={setIsLoading} setId={setId} />
                 ) : (
                     chats.map((message) => (
