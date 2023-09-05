@@ -1,14 +1,14 @@
 import React from 'react';
-import ChatRoom from './components/chatRoom';
+import ChatRoomId from './components/chatroomId';
 
-function Home() {
+function HomeId() {
   return (
     <div className="mt-[8rem] h-[100%] rounded-[1rem] bg-sirp-secondary2 mx-5">
       <div>
-        <ChatRoom/>
+        <ChatRoomId/>
       </div>
     </div>
   );
 }
 
-export default Home;
+export default HomeId;

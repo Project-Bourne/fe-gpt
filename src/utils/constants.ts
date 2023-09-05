@@ -12,6 +12,12 @@ export const NavBarContents = [
     route: "/home",
   },
   {
+    name: "History",
+    icon: "history.svg",
+    id: 4,
+    route: "/history",
+  },
+  {
     name: "Training",
     icon: "training.svg",
     id: 3,
