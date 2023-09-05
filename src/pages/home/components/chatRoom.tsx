@@ -142,42 +142,41 @@ function ChatRoom() {
                 const response = await res.json();
 
                 if (response) {
+                    let pretext = `${response.data[0].text}`
                     const dataObj = {
-                        documentText: response.data[0].text
+                        message: pretext,
                     };
-                    setIsLoading(true);
-                    const res = await ChatService.firstChat(dataObj);
+                    const res = await ChatService.chat(id, dataObj);
                     if (res.status) {
-                        setShowQuery(true);
-                        setId(res.data.uuid);
                         const newResponse = await ChatService.getChat(res.data.uuid);
                         console.log(newResponse, 'newResponse');
-                        response.status && setChats(newResponse.data);
-                        setIsLoading(false);
+                        res.status && setChats(newResponse.data);
                         !res.status && NotificationService.error({
                             message: "Error!",
                             addedText: <p>{res.message}. please try again</p>,
                             position: 'bottom-right'
                         });
                     } else {
-                        setIsLoading(false);
                         NotificationService.error({
                             message: "Error!",
                             addedText: <p>{res.message}. please try again</p>,
                             position: 'bottom-right'
                         });
                     }
+                    setIsLoading(false);
                 } else {
+                    setIsLoading(false);
                     // Handle error, e.g., display an error message
                     NotificationService.error({
                         message: "Error!",
                         addedText: <p>File failed to upload</p>,
-                        position: 'bottom-right'
+                        position: 'top-right'
                     });
                     console.error('File upload failed');
                 }
             } catch (error) {
                 console.error('Error uploading file:', error);
+                setIsLoading(false);
                 NotificationService.error({
                     message: "Error!",
                     addedText: <p>An Error occured. please try again</p>,

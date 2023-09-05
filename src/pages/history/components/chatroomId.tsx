@@ -15,7 +15,6 @@ function ChatRoomId() {
     const [isLoading, setIsLoading] = useState(false);
     const { id } = route.query
     const [fileName, setFileName] = useState('')
-    const [documentText, setdocumentText] = useState('')
     const [chats, setChats] = useState([]);
     const boardRef = useRef(null);
 
@@ -29,7 +28,6 @@ function ChatRoomId() {
             try {
                 const dataObj = {
                     message: formData,
-                    documentText
                 };
                 const response = await ChatService.chat(id, dataObj);
                 console.log(response);
@@ -48,6 +46,7 @@ function ChatRoomId() {
                         addedText: <p>{response.message}. please try again</p>,
                         position: 'bottom-right'
                     });
+                    route.push('/history')
                 }
                 setFormData('')
                 setIsLoading(false)
@@ -109,9 +108,27 @@ function ChatRoomId() {
                 const response = await res.json();
 
                 if (response) {
-                    let pretext = `Give indebt explaination of this text: ${response.data[0].text}`
-                    setdocumentText(pretext)
-                    console.log('File uploaded successfully', response);
+                    let pretext = `${response.data[0].text}`
+                    const dataObj = {
+                        message: pretext,
+                    };
+                    const res = await ChatService.chat(id, dataObj);
+                    if (res.status) {
+                        const newResponse = await ChatService.getChat(res.data.uuid);
+                        console.log(newResponse, 'newResponse');
+                        res.status && setChats(newResponse.data);
+                        !res.status && NotificationService.error({
+                            message: "Error!",
+                            addedText: <p>{res.message}. please try again</p>,
+                            position: 'bottom-right'
+                        });
+                    } else {
+                        NotificationService.error({
+                            message: "Error!",
+                            addedText: <p>{res.message}. please try again</p>,
+                            position: 'bottom-right'
+                        });
+                    }
                     setIsLoading(false);
                 } else {
                     setIsLoading(false);
@@ -119,7 +136,7 @@ function ChatRoomId() {
                     NotificationService.error({
                         message: "Error!",
                         addedText: <p>File failed to upload</p>,
-                        position: 'bottom-right'
+                        position: 'top-right'
                     });
                     console.error('File upload failed');
                 }

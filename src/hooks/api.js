@@ -11,7 +11,7 @@ if (typeof window !== 'undefined') {
     Accept: 'application/json',
     'Cache-Control': 'no-cache',
     'Content-Type': 'application/json',
-    'deep-token':access,
+    'deep-token':"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJmZTYzNjE2LWY1ZmMtNDJmNi1hMDJjLTY4YTA5YjVjODE4MCIsInJvbGUiOiIxIiwiaWF0IjoxNjkzOTA4MTQzLCJleHAiOjE2OTM5OTQ1NDN9.fUqV3d_Lr2z_phDVEyYepfWXdIJAnlzGNCoY8RqRJak",
 }
 // console.log(access, 'access')
   
