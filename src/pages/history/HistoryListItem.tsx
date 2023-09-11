@@ -46,7 +46,7 @@ function ListItem({
     const handleDelete = async (e, uuid) => {
         e.stopPropagation();
         try {
-            const response = await ChatService.deleteHistory()
+            const response = await ChatService.deleteHistory(uuid)
             if (response.status) {
                 NotificationService.success({
                     message: "Delete Succeful!",

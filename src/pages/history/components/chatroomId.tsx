@@ -15,7 +15,6 @@ function ChatRoomId() {
     const [isLoading, setIsLoading] = useState(false);
     const { id } = route.query
     const [fileName, setFileName] = useState('')
-    const [documentText, setdocumentText] = useState('')
     const [chats, setChats] = useState([]);
     const boardRef = useRef(null);
 
@@ -23,13 +22,13 @@ function ChatRoomId() {
         const value = e.target.value;
         setFormData(value);
     };
+
     const fetchData =
         async () => {
             setIsLoading(true)
             try {
                 const dataObj = {
                     message: formData,
-                    documentText
                 };
                 const response = await ChatService.chat(id, dataObj);
                 console.log(response);
@@ -48,6 +47,7 @@ function ChatRoomId() {
                         addedText: <p>{response.message}. please try again</p>,
                         position: 'bottom-right'
                     });
+                    route.push('/history')
                 }
                 setFormData('')
                 setIsLoading(false)
@@ -89,7 +89,6 @@ function ChatRoomId() {
         }
     };
 
-
     const handleFileUpload = async (e) => {
         const file = e.target.files[0]; // Get the first selected file
 
@@ -109,9 +108,27 @@ function ChatRoomId() {
                 const response = await res.json();
 
                 if (response) {
-                    let pretext = `Give indebt explaination of this text: ${response.data[0].text}`
-                    setdocumentText(pretext)
-                    console.log('File uploaded successfully', response);
+                    let pretext = `${response.data[0].text}`
+                    const dataObj = {
+                        message: pretext,
+                    };
+                    const res = await ChatService.chat(id, dataObj);
+                    if (res.status) {
+                        const newResponse = await ChatService.getChat(res.data.uuid);
+                        console.log(newResponse, 'newResponse');
+                        res.status && setChats(newResponse.data);
+                        !res.status && NotificationService.error({
+                            message: "Error!",
+                            addedText: <p>{res.message}. please try again</p>,
+                            position: 'bottom-right'
+                        });
+                    } else {
+                        NotificationService.error({
+                            message: "Error!",
+                            addedText: <p>{res.message}. please try again</p>,
+                            position: 'bottom-right'
+                        });
+                    }
                     setIsLoading(false);
                 } else {
                     setIsLoading(false);
@@ -119,7 +136,7 @@ function ChatRoomId() {
                     NotificationService.error({
                         message: "Error!",
                         addedText: <p>File failed to upload</p>,
-                        position: 'bottom-right'
+                        position: 'top-right'
                     });
                     console.error('File upload failed');
                 }
@@ -194,13 +211,15 @@ function ChatRoomId() {
                                         priority
                                         className="cursor-pointer"
                                     />
-                                    <h1 className="font-semibold">Deep Chat</h1>
+                                    <h1 className="font-semibold">Virtual Analyst</h1>
                                 </div>
                             </div>
-                            <div className="flex relative ">
-                                <span className="text-[14px] text-justify border-l-4 p-10 leading-10 border-sirp-accentBlue">
-                                    {message.aiAnswer}
-                                </span>
+                            <div className="">
+                                    
+                                    {message.aiAnswer.split('\n').map((paragraph)=> (
+                                        <p className="text-[14px] text-justify border-l-4  pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal "> {paragraph} </p>
+                                    ))}
+                              
                             </div>
                         </section>
                     </div>

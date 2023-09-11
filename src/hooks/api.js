@@ -6,14 +6,14 @@
 
 let access = '';
 if (typeof window !== 'undefined') {
-  access = localStorage.getItem("deep-access") || '';
+  access = localStorage.getItem("deep-access") || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkNjA0OTUzLTk0YzAtNGYzOC05N2I3LWFlYWEyYWI5YjRjMCIsImlhdCI6MTY5NDQ1Njk2NCwiZXhwIjoxNjk0NTQzMzY0fQ.H3LChv5kz3GEjFheeZxn8VS86cdWPg8uId1StHwqlgk';
 }export const requestHeader = {
     Accept: 'application/json',
     'Cache-Control': 'no-cache',
     'Content-Type': 'application/json',
-    'deep-token':access,
+    'deep-token': access,
 }
-// console.log(access, 'access')
+
   
   /**
    *
@@ -29,7 +29,7 @@ if (typeof window !== 'undefined') {
 
  
   
-  let API_USER_URL = "http://localhost:5050/";
+  let API_USER_URL = "http://192.81.213.226:85/";
   export async function request(url, method, payload, token, text, form) {
     requestHeader['Content-Type'] =
       form === true ? 'multipart/form-data' : 'application/json';

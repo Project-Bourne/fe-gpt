@@ -50,6 +50,22 @@ class ChatService {
     }
   }
 
+  static async contextChat(id,data) {
+    try {
+      const response = await request(
+        `deepchat/${id}`,
+        'PUT',
+        data,
+        true,
+        false,
+        false
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 
   static async getHistory() {
     try {
@@ -66,10 +82,10 @@ class ChatService {
       throw error;
     }
   }
-  static async deleteHistory() {
+  static async deleteHistory(id) {
     try {
       const response = await request(
-        `deepchat/`,
+        `deepchat/${id}`,
         'DELETE',
         {},
         true,
