@@ -22,6 +22,7 @@ function ChatRoomId() {
         const value = e.target.value;
         setFormData(value);
     };
+
     const fetchData =
         async () => {
             setIsLoading(true)
@@ -87,7 +88,6 @@ function ChatRoomId() {
             await fetchData()
         }
     };
-
 
     const handleFileUpload = async (e) => {
         const file = e.target.files[0]; // Get the first selected file
@@ -211,13 +211,15 @@ function ChatRoomId() {
                                         priority
                                         className="cursor-pointer"
                                     />
-                                    <h1 className="font-semibold">Deep Chat</h1>
+                                    <h1 className="font-semibold">Virtual Analyst</h1>
                                 </div>
                             </div>
-                            <div className="flex relative ">
-                                <span className="text-[14px] text-justify border-l-4 p-10 leading-10 border-sirp-accentBlue">
-                                    {message.aiAnswer}
-                                </span>
+                            <div className="">
+                                    
+                                    {message.aiAnswer.split('\n').map((paragraph)=> (
+                                        <p className="text-[14px] text-justify border-l-4  pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal "> {paragraph} </p>
+                                    ))}
+                              
                             </div>
                         </section>
                     </div>

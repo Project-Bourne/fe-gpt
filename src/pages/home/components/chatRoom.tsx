@@ -198,9 +198,12 @@ function ChatRoom() {
             )} */}
             <div className="border-b-2 pb-5 pt-5 px-2 flex items-center justify-between">
                 <h1 className="text-2xl pl-3 pt-5 font-bold">Query Board</h1>
-                <div className='flex items-center'>
+                <div className='flex items-center mb-3'>
                     <span className='text-grey-400 mr-2 text-sm text-sirp-primary'>{fileName}</span>
-                    <label htmlFor="file-input" className="cursor-pointer"><DriveFolderUploadIcon style={{ color: grey[600], cursor: 'pointer' }} /></label>
+                    <label htmlFor="file-input" className='px-4 py-1 rounded-lg' style={{ cursor: 'pointer', color: '#4582C4', backgroundColor: "white", border: '1px solid #4582C4' }}>
+                        <DriveFolderUploadIcon style={{ color: '#4582C4', cursor: 'pointer' }} /> Upload File
+                    </label>
+
                     <input
                         type="file"
                         id="file-input"
@@ -209,7 +212,6 @@ function ChatRoom() {
                         onChange={handleFileUpload}
                     />
                 </div>
-
             </div>
 
             <div className='mb-36'>
@@ -249,13 +251,15 @@ function ChatRoom() {
                                             priority
                                             className="cursor-pointer"
                                         />
-                                        <h1 className="font-semibold">Deep Chat</h1>
+                                        <h1 className="font-semibold">Virtual Analyst</h1>
                                     </div>
                                 </div>
-                                <div className="flex relative ">
-                                    <span className="text-[14px] text-justify border-l-4 p-10 leading-10 border-sirp-accentBlue">
-                                        {message.aiAnswer}
-                                    </span>
+                                <div className="">
+
+                                    {message.aiAnswer.split('\n').map((paragraph) => (
+                                        <p className="text-[14px] text-justify border-l-4  pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal "> {paragraph} </p>
+                                    ))}
+
                                 </div>
                             </section>
                         </div>
