@@ -29,7 +29,7 @@ if (typeof window !== 'undefined') {
 
  
   
-  let API_USER_URL = "http://192.81.213.226:85/";
+  let API_USER_URL = "http://192.81.213.226:88/";
   export async function request(url, method, payload, token, text, form) {
     requestHeader['Content-Type'] =
       form === true ? 'multipart/form-data' : 'application/json';
