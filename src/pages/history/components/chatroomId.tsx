@@ -71,11 +71,9 @@ function ChatRoomId() {
     };
 
     useEffect(() => {
-        if (id) {
-            fetchData()
-        }
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id])
+        if (!id) return
+         ChatService.getChat(id).then((res)=> setChats(res.data))
+    }, [])
 
     useEffect(() => {
         scrollToBottom();
@@ -101,7 +99,7 @@ function ChatRoomId() {
                 const formData = new FormData();
                 formData.append('files', file);
 
-                const res = await fetch('http://192.81.213.226:89/api/v1/uploads', {
+                const res = await fetch('http://192.81.213.226::81/89/api/v1/uploads', {
                     method: 'POST',
                     body: formData,
                 });
@@ -162,20 +160,22 @@ function ChatRoomId() {
                     <p style={{ display: 'inline-block', color: 'white' }}>Deep Chat is thinking...</p>
                 </div>
             )} */}
-            <div className="border-b-2 pb-5 pt-5 px-2 flex items-center justify-between">
+              <div className="border-b-2 pb-5 pt-5 px-2 flex items-center justify-between">
                 <h1 className="text-2xl pl-3 pt-5 font-bold">Query Board</h1>
-                <div className='flex items-center'>
+                <div className='flex items-center mb-3'>
                     <span className='text-grey-400 mr-2 text-sm text-sirp-primary'>{fileName}</span>
-                    <label htmlFor="file-input" className="cursor-pointer"><DriveFolderUploadIcon style={{ color: grey[600], cursor: 'pointer' }} /></label>
+                    <label htmlFor="file-input" className='px-4 py-1 rounded-lg' style={{ cursor: 'pointer', color: '#4582C4', backgroundColor: "white", border: '1px solid #4582C4' }}>
+                        <DriveFolderUploadIcon style={{ color: '#4582C4', cursor: 'pointer' }} /> Upload File
+                    </label>
+
                     <input
                         type="file"
                         id="file-input"
                         style={{ display: 'none' }}
-                        accept=".pdf,.doc,.docx,.txt" // Define accepted file types
+                        accept=".pdf,.doc,.docx,.txt"
                         onChange={handleFileUpload}
                     />
                 </div>
-
             </div>
             <div className='mb-36'>
                 {chats.map((message) => (
