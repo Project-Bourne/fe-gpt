@@ -73,7 +73,7 @@ function ChatRoomId() {
     useEffect(() => {
         if (!id) return
          ChatService.getChat(id).then((res)=> setChats(res.data))
-    }, [])
+    }, [id])
 
     useEffect(() => {
         scrollToBottom();
