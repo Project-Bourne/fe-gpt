@@ -135,7 +135,7 @@ function ChatRoom() {
                 const formData = new FormData();
                 formData.append('files', file);
 
-                const res = await fetch('http://192.81.213.226:89/api/v1/uploads', {
+                const res = await fetch('http://192.81.213.226::81/89/api/v1/uploads', {
                     method: 'POST',
                     body: formData,
                 });
