@@ -2,7 +2,7 @@
 import React from 'react'
 import Image from 'next/image'
 
-function ../public() {
+function NoHistory() {
     return (
         <main className="flex items-center justify-center flex-col gap-4 h-full">
             <div className="flex items-center justify-centery w-[50%] font-bold flex-col p-3 rounded-[1rem] gap-3 text-xl ">
@@ -20,4 +20,4 @@ function ../public() {
     )
 }
 
-export default ../public
+export default NoHistory

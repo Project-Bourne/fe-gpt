@@ -216,8 +216,8 @@ function ChatRoomId() {
                             </div>
                             <div className="">
                                     
-                                    {message.aiAnswer.split('\n').map((paragraph)=> (
-                                        <p className="text-[14px] text-justify border-l-4  pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal "> {paragraph} </p>
+                                    {message.aiAnswer.split('\n').map((paragraph, i)=> (
+                                        <p key={i} className="text-[14px] text-justify border-l-4  pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal "> {paragraph} </p>
                                     ))}
                               
                             </div>
