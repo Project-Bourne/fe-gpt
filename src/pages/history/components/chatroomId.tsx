@@ -8,8 +8,15 @@ import NotificationService from '@/services/notification.service';
 import { grey } from '@mui/material/colors';
 import Button from '@mui/material/Button';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { useSelector } from 'react-redux';
+import { useTruncate } from '@/components/custom-hooks';
 
 function ChatRoomId() {
+      const { userInfo, userAccessToken, refreshToken } = useSelector(
+        (state: any) => state?.auth,
+    );
+    const userInitials = () => userInfo?.firstName[0] + userInfo?.lastName[0];
+    const userName = () => userInfo?.firstName + " " + userInfo?.lastName;
     const route = useRouter()
     const [formData, setFormData] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -182,20 +189,19 @@ function ChatRoomId() {
                     <div key={message.uuid} className=''>
                         <section className="rounded-[1rem] bg-sirp-accentBlue mx-5 mt-5">
                             <div className="flex justify-between w-full items-center px-5 border-b-2">
-                                <div className="flex justify-start items-center gap-5 py-1">
-                                    <Image
-                                        src={require(`../../../../public/icons/singleAvatar.svg`)}
-                                        alt="upload image"
-                                        width={30}
-                                        height={20}
-                                        priority
-                                        className="cursor-pointer"
-                                    />
-                                    <h1>Chisom Herry</h1>
-                                </div>
+                                 <div className="flex justify-start items-center gap-5 p-2">
+                                        <img
+                                            src={userInfo?.image ?? userInitials()}
+                                            alt="upload image"
+                                            width={20}
+                                            height={20}
+                                            className="cursor-pointer rounded-full"
+                                        />
+                                        <h1 className='capitalize font-semibold'> {userInfo?.firstName && useTruncate(userName(), 14)}</h1>
+                                    </div>
                             </div>
                             <div className="flex relative">
-                                <span className="text-[14px] p-10 text-justify">
+                                <span className="text-[14px] p-5 px-10 text-justify">
                                     {message.userQuestion}
                                 </span>
                             </div>
@@ -211,7 +217,7 @@ function ChatRoomId() {
                                         priority
                                         className="cursor-pointer"
                                     />
-                                    <h1 className="font-semibold">Virtual Analyst</h1>
+                                    <h1 className="font-semibold"> Deep Chat </h1>
                                 </div>
                             </div>
                             <div className="">
