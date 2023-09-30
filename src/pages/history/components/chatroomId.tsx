@@ -8,14 +8,20 @@ import NotificationService from '@/services/notification.service';
 import { grey } from '@mui/material/colors';
 import Button from '@mui/material/Button';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { useSelector } from 'react-redux';
+import { useTruncate } from '@/components/custom-hooks';
 
 function ChatRoomId() {
+      const { userInfo, userAccessToken, refreshToken } = useSelector(
+        (state: any) => state?.auth,
+    );
+    const userInitials = () => userInfo?.firstName[0] + userInfo?.lastName[0];
+    const userName = () => userInfo?.firstName + " " + userInfo?.lastName;
     const route = useRouter()
     const [formData, setFormData] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const { id } = route.query
     const [fileName, setFileName] = useState('')
-    const [documentText, setdocumentText] = useState('')
     const [chats, setChats] = useState([]);
     const boardRef = useRef(null);
 
@@ -23,13 +29,13 @@ function ChatRoomId() {
         const value = e.target.value;
         setFormData(value);
     };
+
     const fetchData =
         async () => {
             setIsLoading(true)
             try {
                 const dataObj = {
                     message: formData,
-                    documentText
                 };
                 const response = await ChatService.chat(id, dataObj);
                 console.log(response);
@@ -48,6 +54,7 @@ function ChatRoomId() {
                         addedText: <p>{response.message}. please try again</p>,
                         position: 'bottom-right'
                     });
+                    route.push('/history')
                 }
                 setFormData('')
                 setIsLoading(false)
@@ -71,10 +78,8 @@ function ChatRoomId() {
     };
 
     useEffect(() => {
-        if (id) {
-            fetchData()
-        }
-          // eslint-disable-next-line react-hooks/exhaustive-deps
+        if (!id) return
+         ChatService.getChat(id).then((res)=> setChats(res.data))
     }, [id])
 
     useEffect(() => {
@@ -89,7 +94,6 @@ function ChatRoomId() {
         }
     };
 
-
     const handleFileUpload = async (e) => {
         const file = e.target.files[0]; // Get the first selected file
 
@@ -102,16 +106,34 @@ function ChatRoomId() {
                 const formData = new FormData();
                 formData.append('files', file);
 
-                const res = await fetch('http://192.81.213.226:89/api/v1/uploads', {
+                const res = await fetch('http://192.81.213.226::81/89/api/v1/uploads', {
                     method: 'POST',
                     body: formData,
                 });
                 const response = await res.json();
 
                 if (response) {
-                    let pretext = `Give indebt explaination of this text: ${response.data[0].text}`
-                    setdocumentText(pretext)
-                    console.log('File uploaded successfully', response);
+                    let pretext = `${response.data[0].text}`
+                    const dataObj = {
+                        message: pretext,
+                    };
+                    const res = await ChatService.chat(id, dataObj);
+                    if (res.status) {
+                        const newResponse = await ChatService.getChat(res.data.uuid);
+                        console.log(newResponse, 'newResponse');
+                        res.status && setChats(newResponse.data);
+                        !res.status && NotificationService.error({
+                            message: "Error!",
+                            addedText: <p>{res.message}. please try again</p>,
+                            position: 'bottom-right'
+                        });
+                    } else {
+                        NotificationService.error({
+                            message: "Error!",
+                            addedText: <p>{res.message}. please try again</p>,
+                            position: 'bottom-right'
+                        });
+                    }
                     setIsLoading(false);
                 } else {
                     setIsLoading(false);
@@ -119,7 +141,7 @@ function ChatRoomId() {
                     NotificationService.error({
                         message: "Error!",
                         addedText: <p>File failed to upload</p>,
-                        position: 'bottom-right'
+                        position: 'top-right'
                     });
                     console.error('File upload failed');
                 }
@@ -145,40 +167,41 @@ function ChatRoomId() {
                     <p style={{ display: 'inline-block', color: 'white' }}>Deep Chat is thinking...</p>
                 </div>
             )} */}
-            <div className="border-b-2 pb-5 pt-5 px-2 flex items-center justify-between">
+              <div className="border-b-2 pb-5 pt-5 px-2 flex items-center justify-between">
                 <h1 className="text-2xl pl-3 pt-5 font-bold">Query Board</h1>
-                <div className='flex items-center'>
+                <div className='flex items-center mb-3'>
                     <span className='text-grey-400 mr-2 text-sm text-sirp-primary'>{fileName}</span>
-                    <label htmlFor="file-input" className="cursor-pointer"><DriveFolderUploadIcon style={{ color: grey[600], cursor: 'pointer' }} /></label>
+                    <label htmlFor="file-input" className='px-4 py-1 rounded-lg' style={{ cursor: 'pointer', color: '#4582C4', backgroundColor: "white", border: '1px solid #4582C4' }}>
+                        <DriveFolderUploadIcon style={{ color: '#4582C4', cursor: 'pointer' }} /> Upload File
+                    </label>
+
                     <input
                         type="file"
                         id="file-input"
                         style={{ display: 'none' }}
-                        accept=".pdf,.doc,.docx,.txt" // Define accepted file types
+                        accept=".pdf,.doc,.docx,.txt"
                         onChange={handleFileUpload}
                     />
                 </div>
-
             </div>
             <div className='mb-36'>
                 {chats.map((message) => (
                     <div key={message.uuid} className=''>
                         <section className="rounded-[1rem] bg-sirp-accentBlue mx-5 mt-5">
                             <div className="flex justify-between w-full items-center px-5 border-b-2">
-                                <div className="flex justify-start items-center gap-5 py-1">
-                                    <Image
-                                        src={require(`../../../../public/icons/singleAvatar.svg`)}
-                                        alt="upload image"
-                                        width={30}
-                                        height={20}
-                                        priority
-                                        className="cursor-pointer"
-                                    />
-                                    <h1>Chisom Herry</h1>
-                                </div>
+                                 <div className="flex justify-start items-center gap-5 p-2">
+                                        <img
+                                            src={userInfo?.image ?? userInitials()}
+                                            alt="upload image"
+                                            width={20}
+                                            height={20}
+                                            className="cursor-pointer rounded-full"
+                                        />
+                                        <h1 className='capitalize font-semibold'> {userInfo?.firstName && useTruncate(userName(), 14)}</h1>
+                                    </div>
                             </div>
                             <div className="flex relative">
-                                <span className="text-[14px] p-10 text-justify">
+                                <span className="text-[14px] p-5 px-10 text-justify">
                                     {message.userQuestion}
                                 </span>
                             </div>
@@ -194,13 +217,15 @@ function ChatRoomId() {
                                         priority
                                         className="cursor-pointer"
                                     />
-                                    <h1 className="font-semibold">Deep Chat</h1>
+                                    <h1 className="font-semibold"> Deep Chat </h1>
                                 </div>
                             </div>
-                            <div className="flex relative ">
-                                <span className="text-[14px] text-justify border-l-4 p-10 leading-10 border-sirp-accentBlue">
-                                    {message.aiAnswer}
-                                </span>
+                            <div className="">
+                                    
+                                    {message.aiAnswer.split('\n').map((paragraph, i)=> (
+                                        <p key={i} className="text-[14px] text-justify border-l-4  pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal "> {paragraph} </p>
+                                    ))}
+                              
                             </div>
                         </section>
                     </div>
