@@ -34,7 +34,7 @@ function Home() {
   }, []);
   return (
     <div className="mt-[8rem] rounded-[1rem] bg-sirp-secondary2 mx-5">
-       {loading && (
+       {/* {loading && (
         <CustomModal
           style="w-full h-full  h-[100%] top-0 bottom-0"
           closeModal={() => setLoading(false)}
@@ -43,7 +43,7 @@ function Home() {
             <Loader />
           </div>
         </CustomModal>
-      )}
+      )} */}
       <div>
         <ChatRoom/>
       </div>
