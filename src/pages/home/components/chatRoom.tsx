@@ -16,7 +16,7 @@ function ChatRoom() {
         (state: any) => state?.auth,
     );
     const userInitials = () => userInfo?.firstName[0] + userInfo?.lastName[0];
-    const userName = () => userInfo?.firstName + " " + userInfo?.lastName;
+    const userName = useTruncate(userInfo?.firstName + " " + userInfo?.lastName, 14);
     const [formData, setFormData] = useState('');
     const [showQuery, setShowQuery] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -237,7 +237,7 @@ function ChatRoom() {
                                             height={20}
                                             className="cursor-pointer rounded-full"
                                         />
-                                        <h1 className='capitalize font-semibold'> {userInfo?.firstName && useTruncate(userName(), 14)}</h1>
+                                        <h1 className='capitalize font-semibold'> {userInfo?.firstName && userName}</h1>
                                     </div>
                                 </div>
                                 <div className="flex relative">

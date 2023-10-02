@@ -6,9 +6,6 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import notification from "../../../../public/icons/notification.svg";
-// import dashboard from "../../../../public/icons/dashboard.svg";
-// import down from "../../../../public/icons/down.svg";
 import { Cookies, useCookies } from 'react-cookie';
 
 function RightComp() {
@@ -35,7 +32,7 @@ function RightComp() {
     setDropdown(false);
   };
 
-  const userName = () => userInfo?.firstName + " " + userInfo?.lastName;
+  const userName = useTruncate(userInfo?.firstName + " " + userInfo?.lastName, 14);
   const userInitials = () => userInfo?.firstName[0] + userInfo?.lastName[0];
 
   return (
@@ -89,7 +86,7 @@ function RightComp() {
 
         <div className="ml-3 bg-sirp-lightGrey w-full self-center hidden md:block">
           <h2 className="text-sirp-grey text-[13px] capitalize">
-            {userInfo?.firstName && useTruncate(userName(), 14)}
+            {userInfo?.firstName && userName}
           </h2>
           <h2 className="text-sirp-primary text-[11px]">
             {userInfo?.role?.roleName}
