@@ -11,6 +11,8 @@ import { useSelector } from 'react-redux';
 import { useTruncate } from '@/components/custom-hooks';
 import { Cookies } from "react-cookie";
 import { useRouter } from 'next/router';
+import CustomModal from '@/components/ui/CustomModal';
+import Loader from '@/components/ui/Loader';
 
 
 function ChatRoom() {
@@ -87,7 +89,10 @@ function ChatRoom() {
                 case "factcheck":
                   setFormData(data?.data?.confidence?.content);
                   break;
-                case "deepchat":
+                case 'summarizer':
+                setFormData(data?.data?.summaryArray[0].summary);
+                console.log(data?.data?.summaryArray[0].summary)
+                    break;
                 case "analyzer":
                   setFormData(data?.data?.text);
                 case "interrogator":
@@ -112,6 +117,7 @@ function ChatRoom() {
     
         fetchData();
       }, [incoming]);
+      console.log(formData)
 
     const handleChange = (e) => {
         const value = e.target.value;
@@ -289,6 +295,16 @@ function ChatRoom() {
                     <p style={{ display: 'inline-block', color: 'white' }}>Deep Chat is thinking...</p>
                 </div>
             )} */}
+            {loading && (
+        <CustomModal
+          style="md:w-[30%] w-[90%] relative top-[20%] rounded-xl mx-auto pt-3 px-3 pb-5"
+          closeModal={() => setLoading(false)}
+        >
+          <div className="flex justify-center items-center mt-[10rem]">
+            <Loader />
+          </div>
+        </CustomModal>
+      )}
             <div className="border-b-2 pb-5 pt-5 px-2 flex items-center justify-between">
                 <h1 className="text-2xl pl-3 pt-5 font-bold">Query Board</h1>
                 <div className='flex items-center mb-3'>
