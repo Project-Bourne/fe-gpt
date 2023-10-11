@@ -56,6 +56,9 @@ function ChatRoom() {
                 case "factcheck":
                   url = `http://192.81.213.226:81/84/fact/${routeId}`;
                   break;
+                case "irp":
+                  url = `http://192.81.213.226:81/84/fact/${routeId}`;
+                  break;
                 case "deepchat":
                   url = `http://192.81.213.226:81/85/deepchat/${routeId}`;
                   break;
@@ -89,9 +92,11 @@ function ChatRoom() {
                 case "factcheck":
                   setFormData(data?.data?.confidence?.content);
                   break;
+                case "irp":
+                  setFormData(data?.data?.confidence?.content);
+                  break;
                 case 'summarizer':
                 setFormData(data?.data?.summaryArray[0].summary);
-                console.log(data?.data?.summaryArray[0].summary)
                     break;
                 case "analyzer":
                   setFormData(data?.data?.text);
@@ -103,7 +108,6 @@ function ChatRoom() {
               }
               setLoading(false);
             } catch (error: any) {
-              console.error("Error:", error);
               NotificationService.error({
                 message: "Error!",
                 addedText: <p>{`${error.message}, please try again`}</p>,
@@ -117,7 +121,6 @@ function ChatRoom() {
     
         fetchData();
       }, [incoming]);
-      console.log(formData)
 
     const handleChange = (e) => {
         const value = e.target.value;
@@ -248,7 +251,6 @@ function ChatRoom() {
                     const res = await ChatService.chat(id, dataObj);
                     if (res.status) {
                         const newResponse = await ChatService.getChat(res.data.uuid);
-                        console.log(newResponse, 'newResponse');
                         res.status && setChats(newResponse.data);
                         !res.status && NotificationService.error({
                             message: "Error!",
@@ -271,10 +273,8 @@ function ChatRoom() {
                         addedText: <p>File failed to upload</p>,
                         position: 'top-right'
                     });
-                    console.error('File upload failed');
                 }
             } catch (error) {
-                console.error('Error uploading file:', error);
                 setIsLoading(false);
                 NotificationService.error({
                     message: "Error!",
