@@ -10,9 +10,10 @@ import Button from '@mui/material/Button';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useSelector } from 'react-redux';
 import { useTruncate } from '@/components/custom-hooks';
+import TypewriterComponent from 'typewriter-effect';
 
 function ChatRoomId() {
-      const { userInfo, userAccessToken, refreshToken } = useSelector(
+    const { userInfo, userAccessToken, refreshToken } = useSelector(
         (state: any) => state?.auth,
     );
     const userInitials = () => userInfo?.firstName[0] + userInfo?.lastName[0];
@@ -79,7 +80,7 @@ function ChatRoomId() {
 
     useEffect(() => {
         if (!id) return
-         ChatService.getChat(id).then((res)=> setChats(res.data))
+        ChatService.getChat(id).then((res) => setChats(res.data))
     }, [id])
 
     useEffect(() => {
@@ -167,7 +168,7 @@ function ChatRoomId() {
                     <p style={{ display: 'inline-block', color: 'white' }}>Deep Chat is thinking...</p>
                 </div>
             )} */}
-              <div className="border-b-2 pb-5 pt-5 px-2 flex items-center justify-between">
+            <div className="border-b-2 pb-5 pt-5 px-2 flex items-center justify-between">
                 <h1 className="text-2xl pl-3 pt-5 font-bold">Query Board</h1>
                 <div className='flex items-center mb-3'>
                     <span className='text-grey-400 mr-2 text-sm text-sirp-primary'>{fileName}</span>
@@ -189,16 +190,16 @@ function ChatRoomId() {
                     <div key={message.uuid} className=''>
                         <section className="rounded-[1rem] bg-sirp-accentBlue mx-5 mt-5">
                             <div className="flex justify-between w-full items-center px-5 border-b-2">
-                                 <div className="flex justify-start items-center gap-5 p-2">
-                                        <img
-                                            src={userInfo?.image ?? userInitials()}
-                                            alt="upload image"
-                                            width={20}
-                                            height={20}
-                                            className="cursor-pointer rounded-full"
-                                        />
-                                        <h1 className='capitalize font-semibold'> {userInfo?.firstName && userName}</h1>
-                                    </div>
+                                <div className="flex justify-start items-center gap-5 p-2">
+                                    <img
+                                        src={userInfo?.image ?? userInitials()}
+                                        alt="upload image"
+                                        width={20}
+                                        height={20}
+                                        className="cursor-pointer rounded-full"
+                                    />
+                                    <h1 className='capitalize font-semibold'> {userInfo?.firstName && userName}</h1>
+                                </div>
                             </div>
                             <div className="flex relative">
                                 <span className="text-[14px] p-5 px-10 text-justify">
@@ -221,11 +222,14 @@ function ChatRoomId() {
                                 </div>
                             </div>
                             <div className="">
-                                    
-                                    {message.aiAnswer.split('\n').map((paragraph, i)=> (
-                                        <p key={i} className="text-[14px] text-justify border-l-4  pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal "> {paragraph} </p>
-                                    ))}
-                              
+
+                                {message.aiAnswer.split('\n').map((paragraph, i) => (
+                                    // <p key={i} className="text-[14px] text-justify border-l-4  pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal "> {paragraph} </p>
+                                    <div key={i} className="text-[14px] text-justify border-l-4  pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal">
+                                        <TypewriterComponent options={{ strings: paragraph, autoStart: true, delay: 5, loop: false }} />
+                                    </div>
+                                ))}
+
                             </div>
                         </section>
                     </div>
