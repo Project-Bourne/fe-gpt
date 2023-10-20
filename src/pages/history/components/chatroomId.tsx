@@ -11,6 +11,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useSelector } from 'react-redux';
 import { useTruncate } from '@/components/custom-hooks';
 import TypewriterComponent from 'typewriter-effect';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 function ChatRoomId() {
     const { userInfo, userAccessToken, refreshToken } = useSelector(
@@ -95,22 +96,25 @@ function ChatRoomId() {
         }
     };
 
-    const handleFileUpload = async (e) => {
-        const file = e.target.files[0]; // Get the first selected file
-
-        if (file) {
-            setIsLoading(true);
-            console.log(file.name)
-            setFileName(file.name)
+    const handleFileUpload = async (event) => {
+        event.preventDefault();
+        setIsLoading(true);
+        const selectedFile = event.target.files[0];
+        const fullName = `${userInfo.firstName} ${userInfo.lastName}`;
+        const userId = userInfo.uuid
+        if (!fullName || !userId || !selectedFile) return
+        if (selectedFile) {
+            setFileName(selectedFile.name)
+            const formData = new FormData();
+            formData.append('files', selectedFile);
+            formData.append("userId", userId);
+            formData.append("userName", fullName);
             try {
-                // Create a FormData object to send the file to the server
-                const formData = new FormData();
-                formData.append('files', file);
-
-                const res = await fetch('http://192.81.213.226::81/89/api/v1/uploads', {
+                const res = await fetch('http://192.81.213.226:81/89/api/v1/uploads', {
                     method: 'POST',
                     body: formData,
                 });
+
                 const response = await res.json();
 
                 if (response) {
@@ -171,7 +175,8 @@ function ChatRoomId() {
             <div className="border-b-2 pb-5 pt-5 px-2 flex items-center justify-between">
                 <h1 className="text-2xl pl-3 pt-5 font-bold">Query Board</h1>
                 <div className='flex items-center mb-3'>
-                    <span className='text-grey-400 mr-2 text-sm text-sirp-primary'>{fileName}</span>
+                    {fileName && <span className='text-grey-400 text-sm text-sirp-primary ' onClick={() => setFileName('')}><RemoveCircleIcon style={{ color: '#4582C4', cursor: 'pointer' }} /></span>}
+                    <span className='text-grey-400 ml-2 text-sm text-sirp-primary w-[150px]'>{useTruncate(fileName, 18)}</span>
                     <label htmlFor="file-input" className='px-4 py-1 rounded-lg' style={{ cursor: 'pointer', color: '#4582C4', backgroundColor: "white", border: '1px solid #4582C4' }}>
                         <DriveFolderUploadIcon style={{ color: '#4582C4', cursor: 'pointer' }} /> Upload File
                     </label>
@@ -224,10 +229,10 @@ function ChatRoomId() {
                             <div className="">
 
                                 {message.aiAnswer.split('\n').map((paragraph, i) => (
-                                    // <p key={i} className="text-[14px] text-justify border-l-4  pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal "> {paragraph} </p>
-                                    <div key={i} className="text-[14px] text-justify border-l-4  pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal">
-                                        <TypewriterComponent options={{ strings: paragraph, autoStart: true, delay: 5, loop: false }} />
-                                    </div>
+                                    <p key={i} className="text-[14px] text-justify border-l-4  pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal "> {paragraph} </p>
+                                    // <div key={i} className="text-[14px] text-justify border-l-4  pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal">
+                                    //     <TypewriterComponent options={{ strings: paragraph, autoStart: true, delay: 5, loop: false }} />
+                                    // </div>
                                 ))}
 
                             </div>

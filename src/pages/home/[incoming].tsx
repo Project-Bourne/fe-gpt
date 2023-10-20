@@ -1,17 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import QueryCard from './QueryCard';
+import QueryCard from './components/QueryCard';
 import ChatService from '@/services/chat.service';
 import CircularProgress from '@mui/material/CircularProgress';
 import NotificationService from '@/services/notification.service';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
-import { grey } from '@mui/material/colors';
 import Button from '@mui/material/Button';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useSelector } from 'react-redux';
 import { useTruncate } from '@/components/custom-hooks';
-import TypewriterComponent from 'typewriter-effect';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import { Cookies } from "react-cookie";
+import { useRouter } from 'next/router';
+import CustomModal from '@/components/ui/CustomModal';
+import Loader from '@/components/ui/Loader';
+
 
 function ChatRoom() {
     const { userInfo, userAccessToken, refreshToken } = useSelector(
@@ -21,12 +23,101 @@ function ChatRoom() {
     const userName = useTruncate(userInfo?.firstName + " " + userInfo?.lastName, 14);
     const [formData, setFormData] = useState('');
     const [showQuery, setShowQuery] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [documentText, setdocumentText] = useState('')
     const [fileName, setFileName] = useState('')
     const [id, setId] = useState('');
     const [chats, setChats] = useState([]);
     const boardRef = useRef(null);
+    const router = useRouter();
+    const { incoming } = router.query;
+    const cookies = new Cookies();
+    const token = cookies.get("deep-access");
+    const headers = {
+        "deep-token": token,
+      };
+
+      useEffect(() => {
+        const fetchData = async () => {
+          setLoading(true);
+          if (typeof incoming === "string") {
+            try {
+              const [routeId, routeName] = incoming.split("&");
+              let url;
+    
+              switch (routeName) {
+                case "summarizer":
+                  url = `http://192.81.213.226:81/82/summary/${routeId}`;
+                  break;
+                case "translator":
+                  url = `http://192.81.213.226:81/83/translation/${routeId}`;
+                  break;
+                case "factcheck":
+                  url = `http://192.81.213.226:81/84/fact/${routeId}`;
+                  break;
+                case "deepchat":
+                  url = `http://192.81.213.226:81/85/deepchat/${routeId}`;
+                  break;
+                case "analyzer":
+                  url = `http://192.81.213.226:81/81/analysis/${routeId}`;
+                  break;
+                case "interrogator":
+                  url = `http://196700:h/${routeId}`;
+                  break;
+                case "collab":
+                  url = `http://192.81.213.226:81/86/api/v1/${routeId}`;
+                  break;
+                default:
+                  throw new Error("Invalid routeName");
+              }
+    
+              const response = await fetch(url, {
+                method: "GET",
+                headers: headers,
+              });
+    
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+                setLoading(false);
+              }
+              const data = await response.json();
+              switch (routeName) {
+                case "translator":
+                  setFormData(data?.data?.textTranslation);
+                  break;
+                case "factcheck":
+                  setFormData(data?.data?.confidence?.content);
+                  break;
+                case 'summarizer':
+                setFormData(data?.data?.summaryArray[0].summary);
+                console.log(data?.data?.summaryArray[0].summary)
+                    break;
+                case "analyzer":
+                  setFormData(data?.data?.text);
+                case "interrogator":
+                case "collab":
+                  break;
+                default:
+                  break;
+              }
+              setLoading(false);
+            } catch (error: any) {
+              console.error("Error:", error);
+              NotificationService.error({
+                message: "Error!",
+                addedText: <p>{`${error.message}, please try again`}</p>,
+                position: "top-center",
+              });
+            } finally {
+              setLoading(false);
+            }
+          }
+        };
+    
+        fetchData();
+      }, [incoming]);
+      console.log(formData)
 
     const handleChange = (e) => {
         const value = e.target.value;
@@ -41,7 +132,7 @@ function ChatRoom() {
     };
 
     useEffect(() => {
-        // scrollToBottom();
+        scrollToBottom();
         window.scrollTo(0, document.body.scrollHeight);
     }, [chats, isLoading]);
 
@@ -131,25 +222,22 @@ function ChatRoom() {
     };
 
 
-    const handleFileUpload = async (event) => {
-        event.preventDefault();
-        setIsLoading(true);
-        const selectedFile = event.target.files[0];
-        const fullName = `${userInfo.firstName} ${userInfo.lastName}`;
-        const userId = userInfo.uuid
-        if (!fullName || !userId || !selectedFile) return
-        if (selectedFile) {
-            setFileName(selectedFile.name)
-            const formData = new FormData();
-            formData.append('files', selectedFile);
-            formData.append("userId", userId);
-            formData.append("userName", fullName);
+    const handleFileUpload = async (e) => {
+        const file = e.target.files[0]; // Get the first selected file
+
+        if (file) {
+            setIsLoading(true);
+            console.log(file.name)
+            setFileName(file.name)
             try {
-                const res = await fetch('http://192.81.213.226:81/89/api/v1/uploads', {
+                // Create a FormData object to send the file to the server
+                const formData = new FormData();
+                formData.append('files', file);
+
+                const res = await fetch('http://192.81.213.226::81/89/api/v1/uploads', {
                     method: 'POST',
                     body: formData,
                 });
-
                 const response = await res.json();
 
                 if (response) {
@@ -159,11 +247,14 @@ function ChatRoom() {
                     };
                     const res = await ChatService.chat(id, dataObj);
                     if (res.status) {
-                        setShowQuery(true);
-                        setId(response.data.uuid);
                         const newResponse = await ChatService.getChat(res.data.uuid);
                         console.log(newResponse, 'newResponse');
                         res.status && setChats(newResponse.data);
+                        !res.status && NotificationService.error({
+                            message: "Error!",
+                            addedText: <p>{res.message}. please try again</p>,
+                            position: 'bottom-right'
+                        });
                     } else {
                         NotificationService.error({
                             message: "Error!",
@@ -204,14 +295,24 @@ function ChatRoom() {
                     <p style={{ display: 'inline-block', color: 'white' }}>Deep Chat is thinking...</p>
                 </div>
             )} */}
+            {loading && (
+        <CustomModal
+          style="md:w-[30%] w-[90%] relative top-[20%] rounded-xl mx-auto pt-3 px-3 pb-5"
+          closeModal={() => setLoading(false)}
+        >
+          <div className="flex justify-center items-center mt-[10rem]">
+            <Loader />
+          </div>
+        </CustomModal>
+      )}
             <div className="border-b-2 pb-5 pt-5 px-2 flex items-center justify-between">
                 <h1 className="text-2xl pl-3 pt-5 font-bold">Query Board</h1>
                 <div className='flex items-center mb-3'>
-                    {fileName && <span className='text-grey-400 text-sm text-sirp-primary ' onClick={() => setFileName('')}><RemoveCircleIcon style={{ color: '#4582C4', cursor: 'pointer' }} /></span>}
-                    <span className='text-grey-400 ml-2 text-sm text-sirp-primary w-[150px]'>{useTruncate(fileName, 18)}</span>
+                    <span className='text-grey-400 mr-2 text-sm text-sirp-primary'>{fileName}</span>
                     <label htmlFor="file-input" className='px-4 py-1 rounded-lg' style={{ cursor: 'pointer', color: '#4582C4', backgroundColor: "white", border: '1px solid #4582C4' }}>
                         <DriveFolderUploadIcon style={{ color: '#4582C4', cursor: 'pointer' }} /> Upload File
                     </label>
+
                     <input
                         type="file"
                         id="file-input"
@@ -229,7 +330,7 @@ function ChatRoom() {
                 ) : (
                     chats.map((message) => (
                         <div key={message.uuid} className=''>
-                            <div className="rounded-[1rem] bg-sirp-accentBlue mx-5 mt-5">
+                            <section className="rounded-[1rem] bg-sirp-accentBlue mx-5 mt-5">
                                 <div className="flex justify-between w-full items-center px-5 border-b-2">
                                     <div className="flex justify-start items-center gap-5 p-2">
                                         <img
@@ -247,12 +348,12 @@ function ChatRoom() {
                                         {message.userQuestion}
                                     </span>
                                 </div>
-                            </div>
+                            </section>
                             <section className=" mx-5 mt-5 shadow-sm">
                                 <div className="flex justify-between w-full items-center px-5 border-b-4 border-l-4  border-sirp-accentBlue">
                                     <div className="flex justify-start items-center gap-5 py-1">
                                         <Image
-                                            src={require(`../../../../public/icons/oracleAvatar.svg`)}
+                                            src={require(`../../../public/icons/oracleAvatar.svg`)}
                                             alt="upload image"
                                             width={30}
                                             height={20}
@@ -266,10 +367,6 @@ function ChatRoom() {
 
                                     {message.aiAnswer.split('\n').map((paragraph, i) => (
                                         <p key={i} className="text-[14px] text-justify border-l-4  pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal "> {paragraph} </p>
-                                        // <div key={i} className="text-[14px] text-justify border-l-4  pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal">
-                                        //     <TypewriterComponent options={{ strings: paragraph, autoStart: true, delay: 5, loop: false }} />
-                                        // </div>
-
                                     ))}
 
                                 </div>
@@ -301,7 +398,7 @@ function ChatRoom() {
                             }
                         >
                             <Image
-                                src={require(`../../../../public/icons/chat.svg`)}
+                                src={require(`../../../public/icons/chat.svg`)}
                                 alt="upload image"
                                 width={20}
                                 height={20}
