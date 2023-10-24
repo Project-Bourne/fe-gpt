@@ -1,8 +1,39 @@
+// {
+//   "env": {
+//     "browser": true,
+//     "es2021": true
+//   },
+//   "extends": [
+//     "airbnb",
+//     "next",
+//     "prettier"
+//     // "prettier/react"
+//   ],
+//   "parserOptions": {
+//     "ecmaVersion": "latest",
+//     "parser": "@babel/eslint-parser"
+//   },
+//   "rules": {
+//     "react/no-unescaped-entities": "off",
+//     "@next/next/no-page-custom-font": "off",
+//     "no-use-before-define": ["off"],
+//     "max-lines-per-function": ["off"]
+//   }
+// }
+
 {
   "extends": "next/core-web-vitals",
-  "plugins": ["prettier"]
-  // "rules": {
-  //   "prettier/prettier": "warn",
-  //   "no-console": "warn"
-  // }
+  "plugins": ["prettier"],
+  "rules": {
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-page-custom-font": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "react/no-deprecated": "off",
+    "@next/next/no-img-element": "off",
+    "react-hooks/rules-of-hooks": "off",
+    "import/no-anonymous-default-export": "off",
+    "@next/next/no-sync-scripts": "off"
+    //   "prettier/prettier": "warn",
+    //   "no-console": "warn"
+  }
 }
