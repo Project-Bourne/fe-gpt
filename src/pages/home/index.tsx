@@ -21,7 +21,7 @@ function Home() {
             dispatch(setUserInfo(response?.data));
           }
         })
-        .catch((err) => {
+        .catch((err) => { 
           NotificationService.error({
             message: "Error",
             addedText: "Could not fetch user data",
