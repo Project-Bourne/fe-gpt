@@ -67,10 +67,10 @@ class ChatService {
   }
 
 
-  static async getHistory() {
+  static async getHistory(page=1) {
     try {
       const response = await request(
-        `deepchat`,
+        `deepchat?page=${page}`,
         'GET',
         {},
         true,
