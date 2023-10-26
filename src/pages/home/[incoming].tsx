@@ -53,6 +53,9 @@ function ChatRoom() {
                 case "translator":
                   url = `http://192.81.213.226:81/83/translation/${routeId}`;
                   break;
+                case "irp":
+                  url = `http://192.81.213.226:81/84/fact/${routeId}`;
+                  break;
                 case "factcheck":
                   url = `http://192.81.213.226:81/84/fact/${routeId}`;
                   break;
@@ -86,8 +89,11 @@ function ChatRoom() {
                 case "translator":
                   setFormData(data?.data?.textTranslation);
                   break;
+                case "irp":
+                  setFormData(data?.data?.confidence?.content5wh);
+                  break;
                 case "factcheck":
-                  setFormData(data?.data?.confidence?.content);
+                  setFormData(data?.data?.confidence?.content5wh);
                   break;
                 case 'summarizer':
                 setFormData(data?.data?.summaryArray[0].summary);
