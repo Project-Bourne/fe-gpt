@@ -29,7 +29,7 @@ function ListItem({
     };
 
     const handleItemClick = () => {
-        router.push(`/history/${uuid}`);
+        router.replace(`/history/${uuid}`);
     };
 
     // const handleArchive = async (e, uuid) => {
