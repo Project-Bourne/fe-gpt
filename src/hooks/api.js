@@ -42,6 +42,8 @@ export async function request(url, method, payload, token, text, form) {
         if (res.status === 403) {
           // Clear the cookie
           cookies.remove('deep-access');
+          cookies.remove('uuid');
+          localStorage.clear()
 
           // Redirect to the login page
          window.location.replace('http://192.81.213.226:30/auth/login');
@@ -66,6 +68,8 @@ export async function request(url, method, payload, token, text, form) {
         if (res.status === 403) {
           // Clear the cookie
           cookies.remove('deep-access');
+          cookies.remove('uuid');
+          localStorage.clear()
 
           // Redirect to the login page
          window.location.replace('http://192.81.213.226:30/auth/login');
@@ -101,6 +105,8 @@ export async function request2(url, method, payload, token, text, form) {
         if (res.status === 403) {
           // Clear the cookie
           cookies.remove('deep-access');
+          cookies.remove('uuid');
+          localStorage.clear()
 
           // Redirect to the login page
          window.location.replace('http://192.81.213.226:30/auth/login');
@@ -125,6 +131,8 @@ export async function request2(url, method, payload, token, text, form) {
         if (res.status === 403) {
           // Clear the cookie
           cookies.remove('deep-access');
+          cookies.remove('uuid');
+          localStorage.clear()
 
           // Redirect to the login page
          window.location.replace('http://192.81.213.226:30/auth/login');
