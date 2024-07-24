@@ -62,7 +62,7 @@ function ChatRoom() {
                 case "deepchat":
                   url = `http://192.81.213.226:81/85/deepchat/${routeId}`;
                   break;
-                case "analyzer":
+                case "analyser":
                   url = `http://192.81.213.226:81/81/analysis/${routeId}`;
                   break;
                 case "interrogator":
@@ -99,10 +99,12 @@ function ChatRoom() {
                 setFormData(data?.data?.summaryArray[0].summary);
                 console.log(data?.data?.summaryArray[0].summary)
                     break;
-                case "analyzer":
-                  setFormData(data?.data?.text);
+                case "analyser":
+                  setFormData(data?.data?.assessment || data?.data?.text);
+                  break;
                 case "interrogator":
                     setFormData(data?.data?.answer);
+                    break;
                 case "collab":
                   break;
                 default:
@@ -123,7 +125,7 @@ function ChatRoom() {
         };
     
         fetchData();
-      }, [incoming]);
+      }, [incoming, formData]);
       console.log(formData)
 
     const handleChange = (e) => {

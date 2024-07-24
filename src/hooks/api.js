@@ -46,7 +46,7 @@ export async function request(url, method, payload, token, text, form) {
           localStorage.clear()
 
           // Redirect to the login page
-         window.location.replace('http://192.81.213.226:30/auth/login');
+          window.location.replace('http://192.81.213.226:30/auth/login');
           return 'Access forbidden. Redirecting to login page.';
         } else if (text === true) {
           return res.text();
@@ -72,7 +72,7 @@ export async function request(url, method, payload, token, text, form) {
           localStorage.clear()
 
           // Redirect to the login page
-         window.location.replace('http://192.81.213.226:30/auth/login');
+          window.location.replace('http://192.81.213.226:30/auth/login');
           return 'Access forbidden. Redirecting to login page.';
         } else if (text === true) {
           return res.text();
@@ -109,7 +109,7 @@ export async function request2(url, method, payload, token, text, form) {
           localStorage.clear()
 
           // Redirect to the login page
-         window.location.replace('http://192.81.213.226:30/auth/login');
+          window.location.replace('http://192.81.213.226:30/auth/login');
           return 'Access forbidden. Redirecting to login page.';
         } else if (text === true) {
           return res.text();
@@ -135,7 +135,7 @@ export async function request2(url, method, payload, token, text, form) {
           localStorage.clear()
 
           // Redirect to the login page
-         window.location.replace('http://192.81.213.226:30/auth/login');
+          window.location.replace('http://192.81.213.226:30/auth/login');
           return 'Access forbidden. Redirecting to login page.';
         } else if (text === true) {
           return res.text();
