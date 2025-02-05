@@ -1,52 +1,68 @@
 import React from "react";
 import Link from "next/link";
 import { useSelector } from "react-redux";
-import interrogator from "../../../../public/icons/interrogator.svg";
-import summarizer from "../../../../public/icons/summarizer.svg";
-import irp from "../../../../public/icons/irp.svg";
-import translator from "../../../../public/icons/translator.svg";
-import collab from "../../../../public/icons/collab.svg";
-import fact_checker from "../../../../public/icons/checker.svg";
-import deep_chat from "../../../../public/icons/deep.svg";
-import admin from "../../../../public/icons/admin.svg";
+// import interrogator from "../../../../public/icons/interrogator.svg";
+// import summarizer from "../../../../public/icons/summarizer.svg";
+// import irp from "../../../../public/icons/irp.svg";
+// import translator from "../../../../public/icons/translator.svg";
+// import collab from "../../../../public/icons/collab.svg";
+// import fact_checker from "../../../../public/icons/checker.svg";
+// import deep_chat from "../../../../public/icons/deep.svg";
+// import admin from "../../../../public/icons/admin.svg";
 import Image from "next/image";
 
-const BASE_URL = "http://192.81.213.226";
+const interrogator = require('../../../../public/icons/interrogator.svg');
+const summarizer = require('../../../../public/icons/summarizer.svg');
+const irp = require('../../../../public/icons/irp.svg');
+const translator = require('../../../../public/icons/translator.svg');
+const collab = require('../../../../public/icons/collab.svg');
+const fact_checker = require('../../../../public/icons/checker.svg');
+// const deep_chat = require('../../../../public/icons/deep.svg');
+const admin = require('../../../../public/icons/admin.svg');
+// Commented out hardcoded BASE_URL
+// const BASE_URL = "http://192.81.213.226";
+const BASE_URL = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}`;
 
 const dropdownItems = [
   {
     name: "Admin",
-    to: `${BASE_URL}:38/home`,
+    // to: `${BASE_URL}:38/home`,
+    to: `${BASE_URL}:${process.env.NEXT_PUBLIC_ADMIN_PORT}/home`,
     key: "admin",
     icon: admin,
   },
   {
     name: "IRP",
-    to: `${BASE_URL}:30/home`,
+    // to: `${BASE_URL}:30/home`,
+    to: `${BASE_URL}:${process.env.NEXT_PUBLIC_IRP_PORT}/home`,
     key: "irp",
     icon: irp,
   },
   {
     name: "Collab",
-    to: `${BASE_URL}:36/chats`,
+    // to: `${BASE_URL}:36/chats`,
+    to: `${BASE_URL}:${process.env.NEXT_PUBLIC_COLLAB_PORT}/chats`,
     key: "collab",
     icon: collab,
   },
   {
     name: "Summarizer",
-    to: `${BASE_URL}:32/home`,
+    // to: `${BASE_URL}:32/home`,
+    to: `${BASE_URL}:${process.env.NEXT_PUBLIC_SUMMARIZER_PORT}/home`,
     key: "summarizer",
     icon: summarizer,
   },
   {
     name: "Fact Checker",
-    to: `${BASE_URL}:34/home`,
+    // to: `${BASE_URL}:34/home`,
+    to: `${BASE_URL}:${process.env.NEXT_PUBLIC_FACT_CHECKER_PORT}/home`,
     key: "fact checker",
     icon: fact_checker,
   },
   {
     name: "Translator",
-    to: `${BASE_URL}:33/home`,
+    // to: `${BASE_URL}:33/home`,
+    to: `${BASE_URL}:${process.env.NEXT_PUBLIC_TRANSLATOR_PORT}/home`,
     key: "translator",
     icon: translator,
   },
@@ -54,13 +70,14 @@ const dropdownItems = [
   // {
   //   name: "Deep Chat",
   //   to: `${BASE_URL}:35/home`,
+  //   to: `${BASE_URL}:${process.env.NEXT_PUBLIC_DEEP_CHAT_PORT}/home`,
   //   key: "deep chat",
   //   icon: deep_chat,
   // },
 
   {
     name: "Interrogator",
-    to: `${BASE_URL}:82/home`, // change route
+    to: `${BASE_URL}:${process.env.NEXT_PUBLIC_INTERROGATOR_PORT}/home`, // Updated route
     key: "interrogator",
     icon: interrogator,
   },

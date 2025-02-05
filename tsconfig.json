@@ -49,6 +49,9 @@
       ],
       "@/icons": [
         "./src/components/icons/*"
+      ],
+      "@/public": [
+        "./public/*"
       ]
     },
     "strictNullChecks": false //oppose

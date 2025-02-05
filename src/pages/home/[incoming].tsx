@@ -48,28 +48,36 @@ function ChatRoom() {
     
               switch (routeName) {
                 case "summarizer":
-                  url = `http://192.81.213.226:81/82/summary/${routeId}`;
+                //   url = `http://192.81.213.226:81/82/summary/${routeId}`;
+                  url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_SUMMARIZER_API_ROUTE}/summary/${routeId}`;
                   break;
                 case "translator":
-                  url = `http://192.81.213.226:81/83/translation/${routeId}`;
+                  // url = `http://192.81.213.226:81/83/translation/${routeId}`;
+                  url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_TRANSLATOR_API_ROUTE}/translation/${routeId}`;
                   break;
                 case "irp":
-                  url = `http://192.81.213.226:81/84/fact/${routeId}`;
+                  // url = `http://192.81.213.226:81/84/fact/${routeId}`;
+                  url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_FACT_CHECKER_API_ROUTE}/fact/${routeId}`;
                   break;
                 case "factcheck":
-                  url = `http://192.81.213.226:81/84/fact/${routeId}`;
+                  // url = `http://192.81.213.226:81/84/fact/${routeId}`;
+                  url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_FACT_CHECKER_API_ROUTE}/fact/${routeId}`;
                   break;
                 case "deepchat":
-                  url = `http://192.81.213.226:81/85/deepchat/${routeId}`;
+                  // url = `http://192.81.213.226:81/85/deepchat/${routeId}`;
+                  url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_DEEP_CHAT_API_ROUTE}/deepchat/${routeId}`;
                   break;
                 case "analyser":
-                  url = `http://192.81.213.226:81/81/analysis/${routeId}`;
+                  // url = `http://192.81.213.226:81/81/analysis/${routeId}`;
+                  url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_ANALYZER_API_ROUTE}/analysis/${routeId}`;
                   break;
                 case "interrogator":
-                    url = `http://192.81.213.226:81/87/interrogation/message/${routeId}`;
+                    // url = `http://192.81.213.226:81/87/interrogation/message/${routeId}`;
+                    url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_INTERROGATOR_API_ROUTE}/message/${routeId}`;
                   break;
                 case "collab":
-                  url = `http://192.81.213.226:81/86/api/v1/${routeId}`;
+                  // url = `http://192.81.213.226:81/86/api/v1/${routeId}`;
+                  url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_COLLAB_API_ROUTE}/api/v1/${routeId}`;
                   break;
                 default:
                   throw new Error("Invalid routeName");
@@ -243,7 +251,10 @@ function ChatRoom() {
                 const formData = new FormData();
                 formData.append('files', file);
 
-                const res = await fetch('http://192.81.213.226::81/89/api/v1/uploads', {
+                const res = await fetch(
+                    // 'http://192.81.213.226::81/89/api/v1/uploads', 
+                    `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_FILE_UPLOAD_API_ROUTE}/api/v1/uploads`,
+                {
                     method: 'POST',
                     body: formData,
                 });

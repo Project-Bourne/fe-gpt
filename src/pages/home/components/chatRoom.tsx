@@ -145,7 +145,10 @@ function ChatRoom() {
             formData.append("userId", userId);
             formData.append("userName", fullName);
             try {
-                const res = await fetch('http://192.81.213.226:81/89/api/v1/uploads', {
+                const res = await fetch(
+                    // 'http://192.81.213.226:81/89/api/v1/uploads', 
+                    `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_FILE_UPLOAD_API_ROUTE}/api/v1/uploads`,
+                    {
                     method: 'POST',
                     body: formData,
                 });

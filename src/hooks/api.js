@@ -28,7 +28,10 @@ export const requestHeader = {
  *
  */
 
-let API_USER_URL = 'http://192.81.213.226:81/85/';
+// Commented out hardcoded URLs
+// let API_USER_URL = 'http://192.81.213.226:81/85/';
+let API_USER_URL = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_DEEP_CHAT_API_ROUTE}/`;
+
 export async function request(url, method, payload, token, text, form) {
   requestHeader['Content-Type'] =
     form === true ? 'multipart/form-data' : 'application/json';
@@ -46,7 +49,8 @@ export async function request(url, method, payload, token, text, form) {
           localStorage.clear()
 
           // Redirect to the login page
-          window.location.replace('http://192.81.213.226:30/auth/login');
+          // window.location.replace('http://192.81.213.226:30/auth/login');
+          window.location.replace(`http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_PORT}/auth/login`)
           return 'Access forbidden. Redirecting to login page.';
         } else if (text === true) {
           return res.text();
@@ -72,7 +76,8 @@ export async function request(url, method, payload, token, text, form) {
           localStorage.clear()
 
           // Redirect to the login page
-          window.location.replace('http://192.81.213.226:30/auth/login');
+          // window.location.replace('http://192.81.213.226:30/auth/login');
+          window.location.replace(`http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_PORT}/auth/login`);
           return 'Access forbidden. Redirecting to login page.';
         } else if (text === true) {
           return res.text();
@@ -87,7 +92,9 @@ export async function request(url, method, payload, token, text, form) {
   }
 }
 
-let API_USER_URL2 = 'http://192.81.213.226:81/80/';
+// Commented out hardcoded URL
+// let API_USER_URL2 = 'http://192.81.213.226:81/80/';
+let API_USER_URL2 = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/80/`;
 
 export async function request2(url, method, payload, token, text, form) {
   if (form === true) {
@@ -109,7 +116,8 @@ export async function request2(url, method, payload, token, text, form) {
           localStorage.clear()
 
           // Redirect to the login page
-          window.location.replace('http://192.81.213.226:30/auth/login');
+          // window.location.replace('http://192.81.213.226:30/auth/login');
+          window.location.replace(`http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_PORT}/auth/login`);
           return 'Access forbidden. Redirecting to login page.';
         } else if (text === true) {
           return res.text();
@@ -135,7 +143,8 @@ export async function request2(url, method, payload, token, text, form) {
           localStorage.clear()
 
           // Redirect to the login page
-          window.location.replace('http://192.81.213.226:30/auth/login');
+          // window.location.replace('http://192.81.213.226:30/auth/login');
+          window.location.replace(`http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_PORT}/auth/login`);
           return 'Access forbidden. Redirecting to login page.';
         } else if (text === true) {
           return res.text();
