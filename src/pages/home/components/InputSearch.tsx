@@ -26,7 +26,7 @@ const InputSearch = () => {
           <span className="flex align-middle justify-center mx-3">
             <Image
               src={require(`../../../../public/icons/search.svg`)}
-              alt="upload image"
+              alt="X"
               width={20}
               height={20}
               priority
@@ -45,7 +45,7 @@ const InputSearch = () => {
               <Image
                 className="flex align-middle justify-center font-light text-[#A1ADB5] cursor-pointer"
                 src={require(`../../../../public/icons/x.svg`)}
-                alt="upload image"
+                alt="X"
                 width={20}
                 height={20}
                 onClick={handleClearInput}

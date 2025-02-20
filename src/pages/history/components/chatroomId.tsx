@@ -8,26 +8,52 @@ import NotificationService from '@/services/notification.service';
 import { grey } from '@mui/material/colors';
 import Button from '@mui/material/Button';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTruncate } from '@/components/custom-hooks';
 import TypewriterComponent from 'typewriter-effect';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import AuthService from '@/services/auth.service';
+import { setUserInfo } from '@/redux/reducer/authReducer';
 
 function ChatRoomId() {
+    const dispatch = useDispatch();
     const { userInfo, userAccessToken, refreshToken } = useSelector(
         (state: any) => state?.auth,
     );
-    const userInitials = () => userInfo?.firstName[0] + userInfo?.lastName[0];
+    const userInitials = () => userInfo?.firstName?.[0] + userInfo?.lastName?.[0];
     const userName = useTruncate(userInfo?.firstName + " " + userInfo?.lastName, 14);
-    const route = useRouter()
+    const route = useRouter();
     const [formData, setFormData] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const { id } = route.query
-    const [fileName, setFileName] = useState('')
+    const { id } = route.query;
+    const [fileName, setFileName] = useState('');
     const [chats, setChats] = useState([]);
     const boardRef = useRef(null);
+
+    // Fetch user information
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await AuthService.getUserViaAccessToken();
+                if (response?.status) {
+                    dispatch(setUserInfo(response?.data));
+                }
+            } catch (err) {
+                console.error("Error fetching user data:", err);
+                NotificationService.error({
+                    message: "Error",
+                    addedText: "Could not fetch user data",
+                    position: "top-center",
+                });
+            }
+        };
+
+        if (!userInfo) {
+            fetchUserData();
+        }
+    }, [dispatch, userInfo]);
 
     const handleChange = (e) => {
         const value = e.target.value;
@@ -201,20 +227,32 @@ function ChatRoomId() {
                         <section className="rounded-[1rem] bg-sirp-accentBlue mx-5 mt-5">
                             <div className="flex justify-between w-full items-center px-5 border-b-2">
                                 <div className="flex justify-start items-center gap-5 p-2">
-                                    <img
+                                    {/* <img
                                         src={userInfo?.image ?? userInitials()}
                                         alt="upload image"
                                         width={20}
                                         height={20}
                                         className="cursor-pointer rounded-full"
-                                    />
+                                    /> */}
+                                    <div className="h-[32px] w-[32px] aspect-square flex items-center justify-center rounded-full bg-sirp-primary">
+                                        <p className="text-white text-[12px] font-extrabold">
+                                            {userInitials()}
+                                        </p>
+                                    </div>
                                     <h1 className='capitalize font-semibold'> {userInfo?.firstName && userName}</h1>
                                 </div>
                             </div>
-                            <div className="flex relative">
-                                <span className="text-[14px] p-5 px-10 text-justify">
+                            <div className="flex flex-col gap-2 px-4 py-2">
+                                {/* <span className="text-[14px] p-5 px-10 text-justify">
                                     {message.userQuestion}
-                                </span>
+                                </span> */}
+                                <ReactMarkdown
+                                    components={{
+                                        p: ({ children }) => <p className='mb-4'>{ children }</p>
+                                    }}
+                                >
+                                    { message.userQuestion }
+                                </ReactMarkdown>
                             </div>
                         </section>
                         <section className=" mx-5 mt-5 shadow-sm">
@@ -228,7 +266,7 @@ function ChatRoomId() {
                                         priority
                                         className="cursor-pointer"
                                     />
-                                    <h1 className="font-semibold"> Deep Chat </h1>
+                                    <h1 className="font-semibold"> Oracle Chat </h1>
                                 </div>
                             </div>
                             <div className="">

@@ -20,6 +20,7 @@ class AuthService {
         false,
         false,
       );
+      console.log('Response: ', 'USER', response);
       return response;
     } catch (error) {
       throw error;

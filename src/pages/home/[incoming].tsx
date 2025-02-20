@@ -7,7 +7,7 @@ import NotificationService from '@/services/notification.service';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import Button from '@mui/material/Button';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTruncate } from '@/components/custom-hooks';
 import { Cookies } from "react-cookie";
 import { useRouter } from 'next/router';
@@ -15,13 +15,15 @@ import CustomModal from '@/components/ui/CustomModal';
 import Loader from '@/components/ui/Loader';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-
+import AuthService from '@/services/auth.service';
+import { setUserInfo } from '@/redux/reducer/authReducer';
 
 function ChatRoom() {
+    const dispatch = useDispatch();
     const { userInfo, userAccessToken, refreshToken } = useSelector(
         (state: any) => state?.auth,
     );
-    const userInitials = () => userInfo?.firstName[0] + userInfo?.lastName[0];
+    const userInitials = () => userInfo?.firstName?.[0] + userInfo?.lastName?.[0];
     const userName = useTruncate(userInfo?.firstName + " " + userInfo?.lastName, 14);
     const [formData, setFormData] = useState('');
     const [showQuery, setShowQuery] = useState(false);
@@ -38,105 +40,153 @@ function ChatRoom() {
     const token = cookies.get("deep-access");
     const headers = {
         "deep-token": token,
-      };
+    };
 
-      useEffect(() => {
-        const fetchData = async () => {
-          setLoading(true);
-          if (typeof incoming === "string") {
+    // Fetch user information
+    useEffect(() => {
+        const fetchUserData = async () => {
             try {
-              const [routeId, routeName] = incoming.split("&");
-              let url;
-    
-              switch (routeName) {
-                case "summarizer":
-                //   url = `http://192.81.213.226:81/82/summary/${routeId}`;
-                  url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_SUMMARIZER_API_ROUTE}/summary/${routeId}`;
-                  break;
-                case "translator":
-                  // url = `http://192.81.213.226:81/83/translation/${routeId}`;
-                  url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_TRANSLATOR_API_ROUTE}/translation/${routeId}`;
-                  break;
-                case "irp":
-                  // url = `http://192.81.213.226:81/84/fact/${routeId}`;
-                  url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_FACT_CHECKER_API_ROUTE}/fact/${routeId}`;
-                  break;
-                case "factcheck":
-                  // url = `http://192.81.213.226:81/84/fact/${routeId}`;
-                  url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_FACT_CHECKER_API_ROUTE}/fact/${routeId}`;
-                  break;
-                case "deepchat":
-                  // url = `http://192.81.213.226:81/85/deepchat/${routeId}`;
-                  url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_DEEP_CHAT_API_ROUTE}/deepchat/${routeId}`;
-                  break;
-                case "analyser":
-                  // url = `http://192.81.213.226:81/81/analysis/${routeId}`;
-                  url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_ANALYZER_API_ROUTE}/analysis/${routeId}`;
-                  break;
-                case "interrogator":
-                    // url = `http://192.81.213.226:81/87/interrogation/message/${routeId}`;
-                    url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_INTERROGATOR_API_ROUTE}/message/${routeId}`;
-                  break;
-                case "collab":
-                  // url = `http://192.81.213.226:81/86/api/v1/${routeId}`;
-                  url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_COLLAB_API_ROUTE}/api/v1/${routeId}`;
-                  break;
-                default:
-                  throw new Error("Invalid routeName");
-              }
-    
-              const response = await fetch(url, {
-                method: "GET",
-                headers: headers,
-              });
-    
-              if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-                setLoading(false);
-              }
-              const data = await response.json();
-              switch (routeName) {
-                case "translator":
-                  setFormData(data?.data?.textTranslation);
-                  break;
-                case "irp":
-                  setFormData(data?.data?.confidence?.content5wh);
-                  break;
-                case "factcheck":
-                  setFormData(data?.data?.confidence?.content5wh);
-                  break;
-                case 'summarizer':
-                setFormData(data?.data?.summaryArray[0].summary);
-                console.log(data?.data?.summaryArray[0].summary)
-                    break;
-                case "analyser":
-                  setFormData(data?.data?.assessment || data?.data?.text);
-                  break;
-                case "interrogator":
-                    setFormData(data?.data?.answer);
-                    break;
-                case "collab":
-                  break;
-                default:
-                  break;
-              }
-              setLoading(false);
-            } catch (error: any) {
-              console.error("Error:", error);
-              NotificationService.error({
-                message: "Error!",
-                addedText: <p>{`${error.message}, please try again`}</p>,
-                position: "top-center",
-              });
-            } finally {
-              setLoading(false);
+                const response = await AuthService.getUserViaAccessToken();
+                if (response?.status) {
+                    dispatch(setUserInfo(response?.data));
+                }
+            } catch (err) {
+                console.error("Error fetching user data:", err);
+                NotificationService.error({
+                    message: "Error",
+                    addedText: "Could not fetch user data",
+                    position: "top-center",
+                });
             }
-          }
         };
-    
+
+        if (!userInfo) {
+            fetchUserData();
+        }
+    }, [dispatch, userInfo]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            if (typeof incoming === "string") {
+                try {
+                    const [routeId, routeName] = incoming.split("&");
+                    let url;
+
+                    switch (routeName) {
+                        case "summarizer":
+                        //   url = `http://192.81.213.226:81/82/summary/${routeId}`;
+                            url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_SUMMARIZER_API_ROUTE}/summary/${routeId}`;
+                            break;
+                        case "translator":
+                        // url = `http://192.81.213.226:81/83/translation/${routeId}`;
+                            url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_TRANSLATOR_API_ROUTE}/translation/${routeId}`;
+                            break;
+                        case "irp":
+                        // url = `http://192.81.213.226:81/84/fact/${routeId}`;
+                            url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_FACT_CHECKER_API_ROUTE}/fact/${routeId}`;
+                            break;
+                        case "factcheck":
+                        // url = `http://192.81.213.226:81/84/fact/${routeId}`;
+                            url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_FACT_CHECKER_API_ROUTE}/fact/${routeId}`;
+                            break;
+                        case "deepchat":
+                        // url = `http://192.81.213.226:81/85/deepchat/${routeId}`;
+                            url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_DEEP_CHAT_API_ROUTE}/deepchat/${routeId}`;
+                            break;
+                        case "analyser":
+                        // url = `http://192.81.213.226:81/81/analysis/${routeId}`;
+                            url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_ANALYZER_API_ROUTE}/analysis/${routeId}`;
+                            break;
+                        case "interrogator":
+                            // url = `http://192.81.213.226:81/87/interrogation/message/${routeId}`;
+                            url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_INTERROGATOR_API_ROUTE}/message/${routeId}`;
+                            break;
+                        case "collab":
+                        // url = `http://192.81.213.226:81/86/api/v1/${routeId}`;
+                            url = `http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_API_PORT}/${process.env.NEXT_PUBLIC_COLLAB_API_ROUTE}/api/v1/${routeId}`;
+                            break;
+                        default:
+                            throw new Error("Invalid routeName");
+                    }
+
+                    const response = await fetch(url, {
+                        method: "GET",
+                        headers: headers,
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    const data = await response.json();
+                    let content = '';
+                    switch (routeName) {
+                        case "translator":
+                            content = data?.data?.textTranslation;
+                            break;
+                        case "irp":
+                        case "factcheck":
+                            content = data?.data?.confidence?.content5wh;
+                            break;
+                        case 'summarizer':
+                            content = data?.data?.summaryArray[0].summary;
+                            break;
+                        case "analyser":
+                            content = data?.data?.assessment || data?.data?.text;
+                            break;
+                        case "interrogator":
+                            content = data?.data?.answer;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    // If we have content, automatically send it to chat
+                    if (content) {
+                        setFormData(content);
+                        const dataObj = {
+                            message: content,
+                            documentText
+                        };
+                        
+                        setIsLoading(true);
+                        try {
+                            const chatResponse = await ChatService.firstChat(dataObj);
+                            if (chatResponse.status) {
+                                setShowQuery(true);
+                                setId(chatResponse.data.uuid);
+                                const newResponse = await ChatService.getChat(chatResponse.data.uuid);
+                                if (newResponse.status) {
+                                    setChats(newResponse.data);
+                                }
+                            }
+                        } catch (error) {
+                            NotificationService.error({
+                                message: "Error!",
+                                addedText: <p>Failed to process content. Please try again.</p>,
+                                position: 'bottom-right'
+                            });
+                        } finally {
+                            setIsLoading(false);
+                            setFormData(''); // Clear input after sending
+                        }
+                    }
+                    
+                } catch (error: any) {
+                    console.error("Error:", error);
+                    NotificationService.error({
+                        message: "Error!",
+                        addedText: <p>{`${error.message}, please try again`}</p>,
+                        position: "top-center",
+                    });
+                } finally {
+                    setLoading(false);
+                }
+            }
+        };
+
         fetchData();
-      }, [incoming, formData]);
-      console.log(formData)
+    }, [incoming]); // Remove formData from dependencies to prevent loops
 
     const handleChange = (e) => {
         const value = e.target.value;
@@ -355,20 +405,32 @@ function ChatRoom() {
                             <section className="rounded-[1rem] bg-sirp-accentBlue mx-5 mt-5">
                                 <div className="flex justify-between w-full items-center px-5 border-b-2">
                                     <div className="flex justify-start items-center gap-5 p-2">
-                                        <img
+                                        {/* <img
                                             src={userInfo?.image ?? userInitials()}
                                             alt="upload image"
                                             width={20}
                                             height={20}
                                             className="cursor-pointer rounded-full"
-                                        />
+                                        /> */}
+                                        <div className="h-[32px] w-[32px] aspect-square flex items-center justify-center rounded-full bg-sirp-primary">
+                                            <p className="text-white text-[12px] font-extrabold">
+                                                {userInitials()}
+                                            </p>
+                                        </div>
                                         <h1 className='capitalize font-semibold'> {userInfo?.firstName && userName}</h1>
                                     </div>
                                 </div>
-                                <div className="flex relative">
-                                    <span className="text-[14px] p-5 px-10 text-justify">
+                                <div className="flex flex-col gap-4 px-4 py-2 relative">
+                                    {/* <span className="text-[14px] p-5 px-10 text-justify">
                                         {message.userQuestion}
-                                    </span>
+                                    </span> */}
+                                    <ReactMarkdown
+                                        components={{
+                                            p: ({ children }) => <p className='mb-4'>{ children }</p>
+                                        }}
+                                    >
+                                        { message.userQuestion }
+                                    </ReactMarkdown>
                                 </div>
                             </section>
                             <section className=" mx-5 mt-5 shadow-sm">
@@ -382,7 +444,7 @@ function ChatRoom() {
                                             priority
                                             className="cursor-pointer"
                                         />
-                                        <h1 className="font-semibold">Deep Chat</h1>
+                                        <h1 className="font-semibold">Oracle Chat</h1>
                                     </div>
                                 </div>
                                 <div className="">
