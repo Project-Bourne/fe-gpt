@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { store, persistor } from "../redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import '@/styles/globals.css';
+import '../polyfills'
 
 function App({ Component, pageProps, ...appProps }) {
   const isLayoutNeeded = appProps.router.pathname.includes("/auth");
