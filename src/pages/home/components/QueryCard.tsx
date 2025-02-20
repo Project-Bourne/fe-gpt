@@ -93,7 +93,7 @@ const QueryCard = ({ setShowQuery, setId, setIsLoading, setChats }) => {
                         value={
                           <div className="flex gap-x-1 text-[12px] items-center py-2 px-3 justify-center">
                             <small className="text-sirp-primary text-sm text-center">
-                              View History
+                              View
                             </small>
                             <Image
                               src={require('../../../../public/icons/blueArrow.svg')}
