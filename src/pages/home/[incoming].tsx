@@ -13,6 +13,8 @@ import { Cookies } from "react-cookie";
 import { useRouter } from 'next/router';
 import CustomModal from '@/components/ui/CustomModal';
 import Loader from '@/components/ui/Loader';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 
 function ChatRoom() {
@@ -384,11 +386,11 @@ function ChatRoom() {
                                     </div>
                                 </div>
                                 <div className="">
-
-                                    {message.aiAnswer.split('\n').map((paragraph, i) => (
-                                        <p key={i} className="text-[14px] text-justify border-l-4  pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal "> {paragraph} </p>
-                                    ))}
-
+                                    <div className="text-[14px] text-justify border-l-4 pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal">
+                                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                            {message.aiAnswer}
+                                        </ReactMarkdown>
+                                    </div>
                                 </div>
                             </section>
                         </div>

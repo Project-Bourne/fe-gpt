@@ -12,6 +12,8 @@ import { useSelector } from 'react-redux';
 import { useTruncate } from '@/components/custom-hooks';
 import TypewriterComponent from 'typewriter-effect';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 function ChatRoom() {
     const { userInfo, userAccessToken, refreshToken } = useSelector(
@@ -266,15 +268,25 @@ function ChatRoom() {
                                     </div>
                                 </div>
                                 <div className="">
-
-                                    {message.aiAnswer.split('\n').map((paragraph, i) => (
+                                    {/* {message.aiAnswer.split('\n').map((paragraph, i) => (
                                         <p key={i} className="text-[14px] text-justify border-l-4  pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal "> {paragraph} </p>
                                         // <div key={i} className="text-[14px] text-justify border-l-4  pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal">
                                         //     <TypewriterComponent options={{ strings: paragraph, autoStart: true, delay: 5, loop: false }} />
                                         // </div>
 
-                                    ))}
-
+                                    ))} */}
+                                    <div className="text-[14px] text-justify border-l-4 pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal">
+                                        <ReactMarkdown 
+                                            remarkPlugins={[remarkGfm]}
+                                            components={{
+                                                p: ({ node, ...props }) => (
+                                                    <p className="text-[14px] text-justify border-l-4  pl-10 pb-1 leading-8 border-sirp-accentBlue break-normal" {...props} />
+                                                )
+                                            }}
+                                        >
+                                            {message.aiAnswer}
+                                        </ReactMarkdown>
+                                    </div>
                                 </div>
                             </section>
                         </div>
