@@ -132,7 +132,7 @@ function ChatRoom() {
                             content = data?.data?.summaryArray[0].summary;
                             break;
                         case "analyser":
-                            content = data?.data?.assessment || data?.data?.text;
+                            content = data?.data?.text || data?.data?.text;
                             break;
                         case "interrogator":
                             content = data?.data?.answer;
