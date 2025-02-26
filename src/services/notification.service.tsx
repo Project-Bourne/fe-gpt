@@ -22,7 +22,7 @@ class NotificationService {
                 message={message} 
                 addedText={addedText} 
                 position={position}
-                />,
+            /> as any,
             container
         );
 
