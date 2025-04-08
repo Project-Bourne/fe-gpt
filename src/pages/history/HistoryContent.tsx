@@ -7,6 +7,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setHistory, updatePagination } from '@/redux/reducer/oracleSlice';
 import ChatService from '@/services/chat.service';
 import CircularProgress from '@mui/material/CircularProgress';
+import Table from '@/components/ui/Table';
+import NotificationService from '@/services/notification.service';
+import { fetchData } from '@/hooks/FetchHistory';
 
 function HistoryContent() {
     const { history } = useSelector((state: any) => state.oracle)
@@ -17,8 +20,7 @@ function HistoryContent() {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
 
-
-    const handlePageChange = async (event, page) => {
+    const handlePageChange = async (page: number) => {
         setLoading(true)
         try {
             setCurrentPage(page);
@@ -31,6 +33,31 @@ function HistoryContent() {
         setLoading(false)
     };
 
+    const handleDelete = async (uuid: string) => {
+        try {
+            const response = await ChatService.deleteHistory(uuid)
+            if (response.status) {
+                NotificationService.success({
+                    message: "Delete Successful!",
+                    addedText: <p>{response.message}</p>,
+                });
+            } else {
+                NotificationService.error({
+                    message: "Error!",
+                    addedText: <p>Something went wrong. Please try again</p>,
+                });
+            }
+            await ChatService.getHistory()
+            fetchData(dispatch)
+        } catch (error) {
+            console.log(error)
+            NotificationService.error({
+                message: "Error!",
+                addedText: <p>Something went wrong. Please try again</p>,
+            });
+        }
+    };
+
     return (
         <div>
             {loading &&
@@ -39,29 +66,18 @@ function HistoryContent() {
                 </div>}
             {history?.chats?.length > 0 ? (
                 <>
-                    {history?.chats?.map(item => {
-                        return (
-                            <div key={item.translationUuid} className='"bg-sirp-listBg border h-[100%] border-sirp-primaryLess1 rounded-lg w-[100%] md:mx-2 my-1'>
-                                <ListItem
-                                    uuid={item.uuid}
-                                    title={item.title} // Pass the title
-                                    time={item.createdAt}
-                                    isArchived={item.bookmark} // Pass the isArchived value
-                                    // buttonType="action"
-                                    actionButtons={<DeleteIcon doc={item.title} />}
-                                />
-                            </div>
-                        );
-                    })}
-                    <div className='w-full m-5 flex justify-end items-center'>
-                        <Pagination
-                            count={Math.ceil(history.totalItems / itemsPerPage)}
-                            page={currentPage}
-                            onChange={handlePageChange}
-                            variant='outlined'
-                            color='primary'
-                        />
-                    </div>
+                    <Table
+                        data={history.chats.map(chat => ({
+                            uuid: chat.uuid,
+                            title: chat.title,
+                            createdAt: chat.createdAt
+                        }))}
+                        totalItems={history.totalItems}
+                        page={currentPage}
+                        loading={loading}
+                        onDelete={handleDelete}
+                        onPageChange={handlePageChange}
+                    />
                 </>
             ) : (
                 <>
