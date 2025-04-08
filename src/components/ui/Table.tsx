@@ -158,7 +158,7 @@ const Table: React.FC<TableProps> = ({
 
     return (
         <Paper 
-            className="w-full bg-[#F8FBFE]" 
+            className="w-full bg-[#F8FBFE] px-6" 
             elevation={0}
             sx={{
                 '& .MuiTableCell-root': {
