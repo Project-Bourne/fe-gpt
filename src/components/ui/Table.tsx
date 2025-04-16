@@ -103,7 +103,8 @@ const Table: React.FC<TableProps> = ({
             label: '',
             width: '10%',
             render: (row: TableData) => (
-                hoveredRow === row.uuid && (
+                // hoveredRow === row.uuid && 
+                (
                     <Tooltip title="Delete">
                         <Image
                             src={require('../../../public/icons/delete.svg')}
@@ -176,7 +177,7 @@ const Table: React.FC<TableProps> = ({
                                     <TableCell
                                         key={column.id}
                                         style={{ width: column.width }}
-                                        className="text-[#383E42] font-medium"
+                                        className="text-[#383E42] font-bold text-xl"
                                     >
                                         {column.label}
                                     </TableCell>
@@ -219,8 +220,8 @@ const Table: React.FC<TableProps> = ({
                 count={totalItems}
                 page={page}
                 onPageChange={(_, newPage) => onPageChange(newPage)}
-                rowsPerPage={10}
-                rowsPerPageOptions={[10]}
+                rowsPerPage={30}
+                rowsPerPageOptions={[30]}
                 sx={{
                     '.MuiTablePagination-select': {
                         display: 'none',
