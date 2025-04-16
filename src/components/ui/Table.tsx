@@ -42,6 +42,7 @@ interface Column {
 interface TableData {
     uuid: string;
     title: string;
+    text: string;
     createdAt: string;
 }
 
@@ -76,13 +77,25 @@ const Table: React.FC<TableProps> = ({
         {
             id: 'title',
             label: 'Title',
-            width: '70%',
+            width: '50%',
             render: (row: TableData) => (
                 <div className="text-[#383E42] truncate hover-bold">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                        { row.title ? row.title : 'NO TITLE'}
+                        { useTruncate(row.title ? row.title : 'NO TITLE', 60) }
                     </ReactMarkdown>
                     {/* {useTruncate(row.title, 60)} */}
+                </div>
+            )
+        },
+        {
+            id: 'text',
+            label: 'Document Text',
+            width: '20%',
+            render: (row: TableData) => (
+                <div>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        { row.text ? row.text : 'OPEN TO VIEW' }
+                    </ReactMarkdown>
                 </div>
             )
         },

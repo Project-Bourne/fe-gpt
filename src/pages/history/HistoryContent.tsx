@@ -77,6 +77,7 @@ function HistoryContent() {
                         data={history.chats.map(chat => ({
                             uuid: chat.uuid,
                             title: chat.title,
+                            text: chat.documentText,
                             createdAt: chat.createdAt
                         }))}
                         totalItems={history.totalItems}
