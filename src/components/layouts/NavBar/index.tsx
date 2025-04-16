@@ -13,22 +13,25 @@ function NavBar() {
     const router = useRouter();
     return (
         <div className="w-[15vw] md:w-[20vw] h-full border-3 border-r bg-white px-3 py-10 md:p-10 fixed z-[20]">
-            <div className="flex flex-row items-center mb-20 cursor-pointer" onClick={() => {
+            <div className="flex flex-col items-center mb-20 cursor-pointer" onClick={() => {
                 // Commented out hardcoded URL
                 // router.replace("http://192.81.213.226:30");
                 router.replace(`http://${process.env.NEXT_PUBLIC_SERVER_IP_ADDRESS}:${process.env.NEXT_PUBLIC_IRP_PORT}`);
             }}>
-                <Image
-                    src={require("../../../../public/svg/logo.svg")}
-                    alt="SIRP Logo"
-                    width={50}
-                    height={50}
-                    className="md:mr-[20px]"
-                    priority
-                />
-                <h1 className="text-sirp-primary font-semibold text-[22px] hidden md:block">
-                    Deep Soul
-                </h1>
+                <div className="flex flex-row items-center gap-x-4">
+                    <Image
+                        src={require("../../../../public/svg/logo.svg")}
+                        alt="SIRP Logo"
+                        width={50}
+                        height={50}
+                    />
+                    <h1 className="text-sirp-primary font-semibold text-[22px] hidden md:block">
+                        Oracle Chat
+                    </h1>
+                </div>
+                {/* <p className="text-sirp-primary font-semibold text-[18px] hidden md:block">
+                    Oracle Chat
+                </p> */}
             </div>
 
             <div className="w-full mt-10">

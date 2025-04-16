@@ -6,7 +6,7 @@ export const NavBarContents = [
   //   route: "/dashboard",
   // },
   {
-    name: "Oracle Chat",
+    name: "Home",
     icon: "home.svg",
     id: 2,
     route: "/home",
