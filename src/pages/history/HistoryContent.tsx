@@ -58,6 +58,13 @@ function HistoryContent() {
         }
     };
 
+    useEffect(() => {
+        return () => {
+            dispatch(updatePagination({ currentPage: 1 }))
+            setCurrentPage(1)
+        }
+    }, [])
+
     return (
         <div>
             {loading &&

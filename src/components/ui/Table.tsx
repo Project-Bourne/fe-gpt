@@ -21,6 +21,7 @@ import { DateTime } from 'luxon';
 import Image from 'next/image';
 import { Tooltip } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 import { useTruncate } from '@/components/custom-hooks';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -68,6 +69,7 @@ const Table: React.FC<TableProps> = ({
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const router = useRouter();
     const [hoveredRow, setHoveredRow] = useState<string | null>(null);
+    const { currentPage, itemsPerPage } = useSelector((state: any) => state.oracle.history)
 
     // Column definitions
     const columns: Column[] = [
@@ -125,6 +127,11 @@ const Table: React.FC<TableProps> = ({
 
     const handleRowClick = (uuid: string) => {
         router.push(`/history/${uuid}`);
+    };
+
+    // Custom label display function to fix pagination display
+    const labelDisplayedRows = ({ from, to, count }) => {
+        return `${from}-${to} of ${count}`;
     };
 
     if (loading) {
@@ -218,10 +225,11 @@ const Table: React.FC<TableProps> = ({
             <TablePagination
                 component="div"
                 count={totalItems}
-                page={page}
-                onPageChange={(_, newPage) => onPageChange(newPage)}
-                rowsPerPage={30}
-                rowsPerPageOptions={[30]}
+                page={page - 1} // Adjust for 0-based index
+                onPageChange={(_, newPage) => onPageChange(newPage + 1)} // Adjust for 1-based index
+                rowsPerPage={10}
+                rowsPerPageOptions={[10]}
+                labelDisplayedRows={labelDisplayedRows}
                 sx={{
                     '.MuiTablePagination-select': {
                         display: 'none',
